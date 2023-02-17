@@ -18,8 +18,7 @@ namespace MonitoringMoney
         public Form1()
         {
             InitializeComponent();
-            RegistrationForm registration = new RegistrationForm();
-            registration.Show();
+
         }
 
         private void bunifuPanel1_Click(object sender, EventArgs e)
@@ -84,7 +83,7 @@ namespace MonitoringMoney
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("Hello world");
+
         }
     }
 }
