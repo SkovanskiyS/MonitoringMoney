@@ -31,7 +31,6 @@ namespace MonitoringMoney
         public MySqlConnection getConnection()
         {
             return mySqlConnection;
-        }   
-
+        }
     }
 }

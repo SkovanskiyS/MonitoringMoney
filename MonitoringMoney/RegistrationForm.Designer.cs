@@ -38,7 +38,7 @@
             Bunifu.UI.WinForms.BunifuTextBox.StateProperties stateProperties7 = new Bunifu.UI.WinForms.BunifuTextBox.StateProperties();
             Bunifu.UI.WinForms.BunifuTextBox.StateProperties stateProperties8 = new Bunifu.UI.WinForms.BunifuTextBox.StateProperties();
             Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges borderEdges1 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton.BorderEdges();
-            this.bunifuCheckBox1 = new Bunifu.UI.WinForms.BunifuCheckBox();
+            this.password_check = new Bunifu.UI.WinForms.BunifuCheckBox();
             this.password_box = new Bunifu.UI.WinForms.BunifuTextBox();
             this.user_box = new Bunifu.UI.WinForms.BunifuTextBox();
             this.bunifuLabel1 = new Bunifu.UI.WinForms.BunifuLabel();
@@ -48,58 +48,59 @@
             this.bunifuButton1 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
             this.SuspendLayout();
             // 
-            // bunifuCheckBox1
+            // password_check
             // 
-            this.bunifuCheckBox1.AllowBindingControlAnimation = true;
-            this.bunifuCheckBox1.AllowBindingControlColorChanges = false;
-            this.bunifuCheckBox1.AllowBindingControlLocation = true;
-            this.bunifuCheckBox1.AllowCheckBoxAnimation = false;
-            this.bunifuCheckBox1.AllowCheckmarkAnimation = true;
-            this.bunifuCheckBox1.AllowOnHoverStates = true;
-            this.bunifuCheckBox1.AutoCheck = true;
-            this.bunifuCheckBox1.BackColor = System.Drawing.Color.Transparent;
-            this.bunifuCheckBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuCheckBox1.BackgroundImage")));
-            this.bunifuCheckBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.bunifuCheckBox1.BindingControlPosition = Bunifu.UI.WinForms.BunifuCheckBox.BindingControlPositions.Right;
-            this.bunifuCheckBox1.BorderRadius = 12;
-            this.bunifuCheckBox1.Checked = true;
-            this.bunifuCheckBox1.CheckState = Bunifu.UI.WinForms.BunifuCheckBox.CheckStates.Checked;
-            this.bunifuCheckBox1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.bunifuCheckBox1.CustomCheckmarkImage = null;
-            this.bunifuCheckBox1.Location = new System.Drawing.Point(199, 236);
-            this.bunifuCheckBox1.MinimumSize = new System.Drawing.Size(17, 17);
-            this.bunifuCheckBox1.Name = "bunifuCheckBox1";
-            this.bunifuCheckBox1.OnCheck.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.bunifuCheckBox1.OnCheck.BorderRadius = 12;
-            this.bunifuCheckBox1.OnCheck.BorderThickness = 2;
-            this.bunifuCheckBox1.OnCheck.CheckBoxColor = System.Drawing.Color.DodgerBlue;
-            this.bunifuCheckBox1.OnCheck.CheckmarkColor = System.Drawing.Color.White;
-            this.bunifuCheckBox1.OnCheck.CheckmarkThickness = 2;
-            this.bunifuCheckBox1.OnDisable.BorderColor = System.Drawing.Color.LightGray;
-            this.bunifuCheckBox1.OnDisable.BorderRadius = 12;
-            this.bunifuCheckBox1.OnDisable.BorderThickness = 2;
-            this.bunifuCheckBox1.OnDisable.CheckBoxColor = System.Drawing.Color.Transparent;
-            this.bunifuCheckBox1.OnDisable.CheckmarkColor = System.Drawing.Color.LightGray;
-            this.bunifuCheckBox1.OnDisable.CheckmarkThickness = 2;
-            this.bunifuCheckBox1.OnHoverChecked.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
-            this.bunifuCheckBox1.OnHoverChecked.BorderRadius = 12;
-            this.bunifuCheckBox1.OnHoverChecked.BorderThickness = 2;
-            this.bunifuCheckBox1.OnHoverChecked.CheckBoxColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
-            this.bunifuCheckBox1.OnHoverChecked.CheckmarkColor = System.Drawing.Color.White;
-            this.bunifuCheckBox1.OnHoverChecked.CheckmarkThickness = 2;
-            this.bunifuCheckBox1.OnHoverUnchecked.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
-            this.bunifuCheckBox1.OnHoverUnchecked.BorderRadius = 12;
-            this.bunifuCheckBox1.OnHoverUnchecked.BorderThickness = 1;
-            this.bunifuCheckBox1.OnHoverUnchecked.CheckBoxColor = System.Drawing.Color.Transparent;
-            this.bunifuCheckBox1.OnUncheck.BorderColor = System.Drawing.Color.DarkGray;
-            this.bunifuCheckBox1.OnUncheck.BorderRadius = 12;
-            this.bunifuCheckBox1.OnUncheck.BorderThickness = 1;
-            this.bunifuCheckBox1.OnUncheck.CheckBoxColor = System.Drawing.Color.Transparent;
-            this.bunifuCheckBox1.Size = new System.Drawing.Size(17, 17);
-            this.bunifuCheckBox1.Style = Bunifu.UI.WinForms.BunifuCheckBox.CheckBoxStyles.Bunifu;
-            this.bunifuCheckBox1.TabIndex = 0;
-            this.bunifuCheckBox1.ThreeState = false;
-            this.bunifuCheckBox1.ToolTipText = null;
+            this.password_check.AllowBindingControlAnimation = true;
+            this.password_check.AllowBindingControlColorChanges = false;
+            this.password_check.AllowBindingControlLocation = true;
+            this.password_check.AllowCheckBoxAnimation = false;
+            this.password_check.AllowCheckmarkAnimation = true;
+            this.password_check.AllowOnHoverStates = true;
+            this.password_check.AutoCheck = true;
+            this.password_check.BackColor = System.Drawing.Color.Transparent;
+            this.password_check.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("password_check.BackgroundImage")));
+            this.password_check.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.password_check.BindingControlPosition = Bunifu.UI.WinForms.BunifuCheckBox.BindingControlPositions.Right;
+            this.password_check.BorderRadius = 12;
+            this.password_check.Checked = true;
+            this.password_check.CheckState = Bunifu.UI.WinForms.BunifuCheckBox.CheckStates.Checked;
+            this.password_check.Cursor = System.Windows.Forms.Cursors.Default;
+            this.password_check.CustomCheckmarkImage = null;
+            this.password_check.Location = new System.Drawing.Point(199, 236);
+            this.password_check.MinimumSize = new System.Drawing.Size(17, 17);
+            this.password_check.Name = "password_check";
+            this.password_check.OnCheck.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.password_check.OnCheck.BorderRadius = 12;
+            this.password_check.OnCheck.BorderThickness = 2;
+            this.password_check.OnCheck.CheckBoxColor = System.Drawing.Color.DodgerBlue;
+            this.password_check.OnCheck.CheckmarkColor = System.Drawing.Color.White;
+            this.password_check.OnCheck.CheckmarkThickness = 2;
+            this.password_check.OnDisable.BorderColor = System.Drawing.Color.LightGray;
+            this.password_check.OnDisable.BorderRadius = 12;
+            this.password_check.OnDisable.BorderThickness = 2;
+            this.password_check.OnDisable.CheckBoxColor = System.Drawing.Color.Transparent;
+            this.password_check.OnDisable.CheckmarkColor = System.Drawing.Color.LightGray;
+            this.password_check.OnDisable.CheckmarkThickness = 2;
+            this.password_check.OnHoverChecked.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.password_check.OnHoverChecked.BorderRadius = 12;
+            this.password_check.OnHoverChecked.BorderThickness = 2;
+            this.password_check.OnHoverChecked.CheckBoxColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.password_check.OnHoverChecked.CheckmarkColor = System.Drawing.Color.White;
+            this.password_check.OnHoverChecked.CheckmarkThickness = 2;
+            this.password_check.OnHoverUnchecked.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.password_check.OnHoverUnchecked.BorderRadius = 12;
+            this.password_check.OnHoverUnchecked.BorderThickness = 1;
+            this.password_check.OnHoverUnchecked.CheckBoxColor = System.Drawing.Color.Transparent;
+            this.password_check.OnUncheck.BorderColor = System.Drawing.Color.DarkGray;
+            this.password_check.OnUncheck.BorderRadius = 12;
+            this.password_check.OnUncheck.BorderThickness = 1;
+            this.password_check.OnUncheck.CheckBoxColor = System.Drawing.Color.Transparent;
+            this.password_check.Size = new System.Drawing.Size(17, 17);
+            this.password_check.Style = Bunifu.UI.WinForms.BunifuCheckBox.CheckBoxStyles.Bunifu;
+            this.password_check.TabIndex = 0;
+            this.password_check.ThreeState = false;
+            this.password_check.ToolTipText = null;
+            this.password_check.CheckedChanged += new System.EventHandler<Bunifu.UI.WinForms.BunifuCheckBox.CheckedChangedEventArgs>(this.bunifuCheckBox1_CheckedChanged);
             // 
             // password_box
             // 
@@ -417,7 +418,8 @@
             this.Controls.Add(this.bunifuLabel1);
             this.Controls.Add(this.user_box);
             this.Controls.Add(this.password_box);
-            this.Controls.Add(this.bunifuCheckBox1);
+            this.Controls.Add(this.password_check);
+            this.MaximumSize = new System.Drawing.Size(458, 465);
             this.Name = "RegistrationForm";
             this.Text = "RegistrationForm";
             this.Load += new System.EventHandler(this.RegistrationForm_Load);
@@ -428,7 +430,7 @@
 
         #endregion
 
-        private Bunifu.UI.WinForms.BunifuCheckBox bunifuCheckBox1;
+        private Bunifu.UI.WinForms.BunifuCheckBox password_check;
         private Bunifu.UI.WinForms.BunifuTextBox password_box;
         private Bunifu.UI.WinForms.BunifuTextBox user_box;
         private Bunifu.UI.WinForms.BunifuLabel bunifuLabel1;

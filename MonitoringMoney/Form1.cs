@@ -18,27 +18,6 @@ namespace MonitoringMoney
         public Form1()
         {
             InitializeComponent();
-
-        }
-
-        private void bunifuPanel1_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void bunifuPanel2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void bunifuButton1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void pictureBox5_Click(object sender, EventArgs e)
@@ -75,8 +54,8 @@ namespace MonitoringMoney
         {
             main_menu.SetPage(3);
         }
-         
-        private void tabPage2_Click(object sender, EventArgs e)
+
+        private void bunifuPanel5_Click(object sender, EventArgs e)
         {
 
         }
@@ -87,3 +66,4 @@ namespace MonitoringMoney
         }
     }
 }
+
