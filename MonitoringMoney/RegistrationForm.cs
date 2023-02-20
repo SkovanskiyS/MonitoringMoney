@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MonitoringMoney
 {
@@ -40,7 +41,7 @@ namespace MonitoringMoney
             if(dataTable.Rows.Count > 0 )
             {
                 this.Hide();
-                var mainForm = new Form1();
+                var mainForm = new MainForm();
                 mainForm.ShowDialog();
             }
             else
@@ -56,6 +57,11 @@ namespace MonitoringMoney
         private void RegistrationForm_Load(object sender, EventArgs e)
         {
 
+        }
+        private void Form1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Determine if text has changed in the textbox by comparing to original text.
+            Application.Exit();
         }
     }
 }
