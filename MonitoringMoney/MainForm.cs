@@ -26,16 +26,6 @@ namespace MonitoringMoney
             Application.Exit();
         }
 
-        private void toolStripContainer1_TopToolStripPanel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void bunifuTextBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
 
@@ -53,8 +43,7 @@ namespace MonitoringMoney
         private void changeText()
         {
             //double value = 0;
-            //string selectedItem = Convert.ToString(currency_Dropdown.SelectedItem);
-            //try
+            //string selectedItemw
             //{
             //    if (selectedItem == "SUM (UZS)")
             //    {
@@ -88,20 +77,14 @@ namespace MonitoringMoney
                
             }
         }
-
-        private void sumValue_Leave(object sender, EventArgs e)
-        {
-            changeText();
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             changeText();
         }
 
-        private void currency_Dropdown_SelectedIndexChanged(object sender, EventArgs e)
+        private void wellText_MouseClick(object sender, MouseEventArgs e)
         {
-
+            wellText.Enabled = Convert.ToString(currency_Dropdown.SelectedItem) == "USD $" ? true : false;
         }
     }
 }
