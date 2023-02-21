@@ -35,7 +35,6 @@ namespace MonitoringMoney
         {
 
         }
-        string valor;
 
         private void bunifuTextBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -51,9 +50,60 @@ namespace MonitoringMoney
             }
         }
 
-        private void bunifuButton1_Click(object sender, EventArgs e)
+        private void changeText()
         {
-            sumValue.Text = string.Format("{0:C}", double.Parse(sumValue.Text.Replace("R$", "")));
+            //double value = 0;
+            //string selectedItem = Convert.ToString(currency_Dropdown.SelectedItem);
+            //try
+            //{
+            //    if (selectedItem == "SUM (UZS)")
+            //    {
+            //        value = Convert.ToDouble(sumValue.Text.Replace(",", "").Replace("сум", ""));
+            //        sumValue.Text = value.ToString("#,#" + " сум", CultureInfo.InvariantCulture);
+            //    }
+            //    else
+            //    {
+            //        value = Convert.ToDouble(sumValue.Text.Replace(",", "").Replace("$", ""));
+            //        sumValue.Text = value.ToString("#,#" + " $", CultureInfo.InvariantCulture);
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+
+            //    MessageBox.Show(e.Message,"Ошибка",MessageBoxButtons.AbortRetryIgnore,MessageBoxIcon.Error)
+            //}
+            string selectedItem = Convert.ToString(currency_Dropdown.SelectedItem);
+            string clear_value = sumValue.Text.Trim();
+            try
+            {
+                //filter
+                string[] remove_elements = { ",", "сум", "$" };
+                foreach (var item in remove_elements) clear_value = clear_value.Replace(item, "");
+                double value = Convert.ToDouble(clear_value);
+                sumValue.Text = selectedItem == "SUM (UZS)" ? value.ToString("#,#" + " сум", CultureInfo.InvariantCulture) : value.ToString("#,#" + " $", CultureInfo.InvariantCulture);
+            }
+            catch (Exception e)
+            {
+                if (!(clear_value.Length == 0)) { MessageBox.Show(e.Message, "Ошибка", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error); }
+               
+            }
+        }
+
+        private void sumValue_Leave(object sender, EventArgs e)
+        {
+            changeText();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            changeText();
+        }
+
+        private void currency_Dropdown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
+
+
