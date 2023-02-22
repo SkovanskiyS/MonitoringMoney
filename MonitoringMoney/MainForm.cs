@@ -86,6 +86,11 @@ namespace MonitoringMoney
         {
             wellText.Enabled = Convert.ToString(currency_Dropdown.SelectedItem) == "USD $" ? true : false;
         }
+
+        private void bunifuButton21_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

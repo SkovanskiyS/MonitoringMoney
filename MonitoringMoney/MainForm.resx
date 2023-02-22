@@ -139,6 +139,14 @@
         AIAIsw8AAAAAIsw+AAAAAEiY+wEgW83qyr3N/gAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="bunifuButton21.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAFkAAAAZCAYAAABaU4LDAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABlSURBVGhD7dAhAQAgEMBAknxl6EcM/D8EQMLUxKm5tRg5
+        Y1Tpl5xn8i3oJScDnAxwMsDJACcDnAxwMsDJACcDnAxwMsDJACcDnAxwMsDJACcDnAxwMsDJACcDnAxo
+        0XPdgh7puTZN1jngmWKOtQAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="bunifuLabel8.BaseStylesheet" xml:space="preserve">
     <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 8,13pt; width: 100%; height: 100%; font-style: normal; font-weight: normal; text-decoration: none; color: rgb(0, 0, 0); text-align: left; }</value>
   </data>
