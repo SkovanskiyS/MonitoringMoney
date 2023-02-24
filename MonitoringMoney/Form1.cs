@@ -13,7 +13,7 @@ namespace MonitoringMoney
 {
     public partial class Form1 : Form
     {
-        DataBase data = new DataBase();
+        DB data = new DB();
 
         public Form1()
         {

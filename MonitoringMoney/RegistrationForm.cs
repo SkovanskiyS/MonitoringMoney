@@ -9,12 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using MonitoringMoney;
 
 namespace MonitoringMoney
 {
     public partial class RegistrationForm : Form
     {
-        DataBase dB;
+        DB dB;
         DataTable dataTable;
         MySqlDataAdapter dataAdapter;
         MySqlCommand cmd;
@@ -24,9 +25,11 @@ namespace MonitoringMoney
         }
         private void bunifuButton1_Click(object sender, EventArgs e)
         {
-            dB = new DataBase();
+            dB = new DB();
+            dB.mySqlConnection = new MySqlConnection("server=localhost;port=3306;username=root;password=root;database=log_pass");
             dataTable = new DataTable();
             dataAdapter = new MySqlDataAdapter();
+            
             cmd = new MySqlCommand("SELECT * FROM `log_pass` WHERE `login` = @username AND `password` = @password", dB.getConnection());
 
             string user_name = this.user_box.Text;
@@ -43,6 +46,7 @@ namespace MonitoringMoney
                 this.Hide();
                 var mainForm = new MainForm();
                 mainForm.ShowDialog();
+                dB.CloseConnectionSQL();
             }
             else
             {

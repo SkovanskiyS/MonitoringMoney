@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,12 +19,10 @@ namespace MonitoringMoney
 {
     public partial class MainForm : Form
     {
-        DataBase dB;
+        DB dB;
         DataTable dataTable;
         MySqlDataAdapter dataAdapter;
         MySqlCommand cmd;
-
-        string dateOfAdd,clientName, get_give, currency, amountOfMoney, well, cash_transferText;
         public MainForm()
         {
             InitializeComponent();
@@ -35,14 +35,10 @@ namespace MonitoringMoney
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            dateOfAdd = dateOfReg.Text;
-            clientName = clientNameT.Text;
-            get_give = this.get_giveDropdown.Text;
-            currency = currency_Dropdown.Text;
-            amountOfMoney = sumValue.Text;
-            well = wellText.Text;
-            cash_transferText = cash_transfer.Text;
-
+            dB = new DB();
+            dataTable = new DataTable();
+            dataAdapter = new MySqlDataAdapter();
+            dB.mySqlConnection = new MySqlConnection("server=localhost;port=3306;username=root;password=root;database=debtorddatabase");
         }
 
         private void bunifuTextBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -93,7 +89,7 @@ namespace MonitoringMoney
             catch (Exception e)
             {
                 if (!(clear_value.Length == 0)) { MessageBox.Show(e.Message, "Ошибка", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error); }
-               
+
             }
         }
         private void button1_Click(object sender, EventArgs e)
@@ -106,20 +102,70 @@ namespace MonitoringMoney
             wellText.Enabled = Convert.ToString(currency_Dropdown.SelectedItem) == "USD $" ? true : false;
         }
 
-        private void bunifuButton21_Click(object sender, EventArgs e)
+        private void addUserBtn_Click(object sender, EventArgs e)
         {
-            //dB = new DataBase();
-            //dataTable = new DataTable();
-            //dataAdapter = new MySqlDataAdapter();
-            //cmd = new MySqlCommand("SELECT * FROM `log_pass` WHERE `login` = @username AND `password` = @password", dB.getConnection());
+            //string dateOfAdd = dateOfReg.Text;
+            //string clientName = clientNameT.Text;
+            //string get_give = get_giveDropdown.Text;
+            //string currency = currency_Dropdown.Text;
+            //string amountOfMoney = sumValue.Text;
+            //string well = wellText.Text;
+            //string cash_transferText = cash_transfer.Text;
+            //string description = descriptionText.Text;
+            //cmd.Parameters.Add("@date", MySqlDbType.VarChar).Value = dateOfAdd;
+            //cmd.Parameters.Add("@client", MySqlDbType.VarChar).Value = clientName;
+            //cmd.Parameters.Add("@exchange", MySqlDbType.VarChar).Value = get_give;
+            //cmd.Parameters.Add("@currency", MySqlDbType.VarChar).Value = currency;
+            //cmd.Parameters.Add("@amount", MySqlDbType.VarChar).Value = amountOfMoney;
+            //cmd.Parameters.Add("@rate", MySqlDbType.VarChar).Value = well;
+            //cmd.Parameters.Add("@transcation", MySqlDbType.VarChar).Value = cash_transferText;
+            //cmd.Parameters.Add("@description", MySqlDbType.VarChar).Value = description;
+            cmd = new MySqlCommand("INSERT INTO `debtordb`(`Date`, `Client`, `Exchange`, `Currency`, `Amount`, `Rate`, `Transaction`, `Description`) VALUES (@date,@client,@exchange,@currency,@amount,@rate,@transaction,@description)", dB.getConnection());
 
-            //string user_name = this.user_box.Text;
-            //string user_password = this.password_box.Text;
+            //0 - date, 1 - client name, 2 - give or get, 3 - currency, 4 - amount(sum), 5 - rate(well), 6 - transaction(cash or transfer), 7 - description
+            string[] collection_of_data = { dateOfReg.Text, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text };
+            string[] commands_to_add = { "@date", "@client", "@exchange", "@currency", "@amount", "@rate", "@transaction", "@description" };
 
-            //cmd.Parameters.Add("@username", MySqlDbType.VarChar).Value = user_name;
-            //cmd.Parameters.Add("@password", MySqlDbType.VarChar).Value = user_password;
-            MessageBox.Show(cash_transfer.Text);
-            //dataAdapter.SelectCommand = cmd;
+            MessageBox.Show(collection_of_data.Length.ToString());
+            MessageBox.Show(commands_to_add.Length.ToString());
+
+
+            for (int i = 0; i < collection_of_data.Length; i++)
+            {
+                if (collection_of_data[5] =="" && wellText.Enabled == false)
+                {
+                    collection_of_data[5] = "Пусто";
+                }
+                if (collection_of_data[i]==null || collection_of_data[i].Length==0)
+                {
+                    MessageBox.Show("Заполните все поля!","Ошибка",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                }
+                else
+                {
+                    cmd.Parameters.Add(commands_to_add[i], MySqlDbType.VarChar).Value = collection_of_data[i];
+                }
+            }
+            dB.OpenConnectionSQL();
+
+            try
+            {
+                if (cmd.ExecuteNonQuery() == 1)
+                {
+                    MessageBox.Show("Успешно добавлен", "Добавлен", MessageBoxButtons.OK);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Возникла ошибка. Перепроверьте заполненные данные", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            dB.CloseConnectionSQL();
+
+        }
+
+        private void cleanBtn_Click(object sender, EventArgs e)
+        {
+            clientNameT.Text = "";
         }
     }
 }

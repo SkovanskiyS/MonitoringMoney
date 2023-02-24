@@ -8,9 +8,9 @@ using MySql.Data.MySqlClient;
 
 namespace MonitoringMoney
 {
-    internal class DataBase
+    public class DB
     {
-        MySqlConnection mySqlConnection = new MySqlConnection("server=localhost;port=3306;username=root;password=root;database=log_pass");
+        public MySqlConnection mySqlConnection;
 
         public void OpenConnectionSQL()
         {
