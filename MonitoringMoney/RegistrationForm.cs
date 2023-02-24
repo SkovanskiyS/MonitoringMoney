@@ -22,6 +22,10 @@ namespace MonitoringMoney
         public RegistrationForm()
         {
             InitializeComponent();
+
+           
+
+
         }
         private void bunifuButton1_Click(object sender, EventArgs e)
         {

@@ -14,7 +14,7 @@ using System.Windows.Forms;
 using Bunifu.UI.WinForms;
 using MySql.Data.MySqlClient;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
+using MonitoringMoney;
 namespace MonitoringMoney
 {
     public partial class MainForm : Form
@@ -36,12 +36,15 @@ namespace MonitoringMoney
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+
+            // MessageBox.Show(GetWellOfDollar.BankUz());
             dB = new DB();
             dataTable = new DataTable();
             dataAdapter = new MySqlDataAdapter();
             dB.mySqlConnection = new MySqlConnection("server=localhost;port=3306;username=root;password=root;database=debtorddatabase");
 
             LoadAllData();
+            ChangeColumnName();
         }
 
         private void bunifuTextBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -122,7 +125,7 @@ namespace MonitoringMoney
             {
                 item.Text = "";
             }
-            cash_transfer.Text = "";
+            descriptionText.Text = "";
         }
 
         private void LoadAllData()
@@ -149,6 +152,27 @@ namespace MonitoringMoney
         private void toolStripComboBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void sumValue_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                changeText();
+            }
+            catch (Exception)
+            {}
+        }
+
+        private void ChangeColumnName()
+        {
+
+            string[] columnNames = { "ID", "Дата", "Клиент", "Обмен", "Валюта", "Сумма", "Курс", "Транзакция","Описание"};
+
+            for (int i = 0; i < allDataGridView.Columns.Count; i++)
+            {
+                allDataGridView.Columns[i].HeaderText = columnNames[i];
+            }
         }
     }
 }
