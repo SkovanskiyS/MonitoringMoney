@@ -23,6 +23,7 @@ namespace MonitoringMoney
         DataTable dataTable;
         MySqlDataAdapter dataAdapter;
         MySqlCommand cmd;
+        BindingSource bindingSource;
         public MainForm()
         {
             InitializeComponent();
@@ -39,6 +40,8 @@ namespace MonitoringMoney
             dataTable = new DataTable();
             dataAdapter = new MySqlDataAdapter();
             dB.mySqlConnection = new MySqlConnection("server=localhost;port=3306;username=root;password=root;database=debtorddatabase");
+
+            LoadAllData();
         }
 
         private void bunifuTextBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -82,6 +85,7 @@ namespace MonitoringMoney
         private void addUserBtn_Click(object sender, EventArgs e)
         {
             cmd = new MySqlCommand("INSERT INTO `debtordb`(`Date`, `Client`, `Exchange`, `Currency`, `Amount`, `Rate`, `Transaction`, `Description`) VALUES (@date,@client,@exchange,@currency,@amount,@rate,@transaction,@description)", dB.getConnection());
+            //cmd = new MySqlCommand("UPDATE `debtordb` SET `Date`=@date,`Client`=@client,`Exchange`=@exchange,`Currency`=@currency,`Amount`=@amount,`Rate`=@rate,`Transaction`=@transaction,`Description`=@description WHERE 1", dB.getConnection());
 
             //0 - date, 1 - client name, 2 - give or get, 3 - currency, 4 - amount(sum), 5 - rate(well), 6 - transaction(cash or transfer), 7 - description
             string[] collection_of_data = { dateOfReg.Text, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text };
@@ -102,17 +106,34 @@ namespace MonitoringMoney
             {
                 if (cmd.ExecuteNonQuery() == 1) MessageBox.Show("Успешно добавлен", "Добавлен", MessageBoxButtons.OK);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.ToString());
                 MessageBox.Show("Возникла ошибка. Перепроверьте заполненные данные", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             dB.CloseConnectionSQL();
-
+            LoadAllData();
         }
 
         private void cleanBtn_Click(object sender, EventArgs e)
         {
-            clientNameT.Text = "";
+            object[] textboxValues = { sumValue, clientNameT, wellText};
+            foreach (BunifuTextBox item in textboxValues)
+            {
+                item.Text = "";
+            }
+            cash_transfer.Text = "";
+        }
+
+        private void LoadAllData()
+        {
+            dB.OpenConnectionSQL();
+            cmd = dB.mySqlConnection.CreateCommand();
+            cmd.CommandText = "SELECT * FROM `debtordb`";
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+            dataTable.Load(reader);
+            allDataGridView.DataSource = dataTable;
         }
     }
 }
