@@ -135,6 +135,21 @@ namespace MonitoringMoney
             dataTable.Load(reader);
             allDataGridView.DataSource = dataTable;
         }
+
+        private void bunifuButton1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("hello world");
+        }
+
+        private void toolStripTextBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripComboBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

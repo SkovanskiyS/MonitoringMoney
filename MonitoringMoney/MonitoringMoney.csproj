@@ -331,6 +331,18 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\285690_zip_file_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\9554855_statistic_graph_statistics_analytics_report_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\299075_profile_filled_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\8726195_save_floppy_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.4.0.2\build\Fody.targets" Condition="Exists('..\packages\Fody.4.0.2\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
