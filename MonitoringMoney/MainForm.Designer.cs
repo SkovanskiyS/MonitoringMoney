@@ -1250,6 +1250,7 @@
             this.allDataGridView.Size = new System.Drawing.Size(1275, 422);
             this.allDataGridView.TabIndex = 7;
             this.allDataGridView.Theme = Bunifu.UI.WinForms.BunifuDataGridView.PresetThemes.Light;
+            this.allDataGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.allDataGridView_KeyUp);
             // 
             // checkBox1
             // 
@@ -1307,6 +1308,9 @@
             this.Text = "MainForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainForm_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.searchBtn)).EndInit();

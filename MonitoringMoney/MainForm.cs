@@ -16,6 +16,8 @@ using MySql.Data.MySqlClient;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using MonitoringMoney;
 using static System.Net.Mime.MediaTypeNames;
+using Mysqlx.Crud;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace MonitoringMoney
 {
@@ -26,6 +28,7 @@ namespace MonitoringMoney
         MySqlDataAdapter dataAdapter;
         MySqlCommand cmd;
         BindingSource bindingSource;
+        DB_API dataBase;
         public MainForm()
         {
             InitializeComponent();
@@ -39,15 +42,14 @@ namespace MonitoringMoney
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
-            // MessageBox.Show(GetWellOfDollar.BankUz());
             dB = new DB();
             dataTable = new DataTable();
             dataAdapter = new MySqlDataAdapter();
             dB.mySqlConnection = new MySqlConnection("server=localhost;port=3306;username=root;password=root;database=debtorddatabase");
-
-            LoadAllData();
+            dataBase = new DB_API();
+            allDataGridView.DataSource = dataBase.LoadAllData();
             ChangeColumnName();
+            this.KeyPreview = true;
         }
 
         private void bunifuTextBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -90,34 +92,10 @@ namespace MonitoringMoney
 
         private void addUserBtn_Click(object sender, EventArgs e)
         {
-            cmd = new MySqlCommand("INSERT INTO `debtordb`(`Date`, `Client`, `Exchange`, `Currency`, `Amount`, `Rate`, `Transaction`, `Description`) VALUES (@date,@client,@exchange,@currency,@amount,@rate,@transaction,@description)", dB.getConnection());
-            //cmd = new MySqlCommand("UPDATE `debtordb` SET `Date`=@date,`Client`=@client,`Exchange`=@exchange,`Currency`=@currency,`Amount`=@amount,`Rate`=@rate,`Transaction`=@transaction,`Description`=@description WHERE 1", dB.getConnection());
+            dataBase = new DB_API();
+            dataBase.Insert(dateOfReg.Text, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text,wellText.Enabled);
 
-            //0 - date, 1 - client name, 2 - give or get, 3 - currency, 4 - amount(sum), 5 - rate(well), 6 - transaction(cash or transfer), 7 - description
-            string[] collection_of_data = { dateOfReg.Text, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text };
-            string[] commands_to_add = { "@date", "@client", "@exchange", "@currency", "@amount", "@rate", "@transaction", "@description" };
-            for (int i = 0; i < collection_of_data.Length; i++)
-            {
-                if (collection_of_data[5] =="" && wellText.Enabled == false) collection_of_data[5] = "Пусто";
-                if (collection_of_data[i]==null || collection_of_data[i].Length==0)
-                {
-                    MessageBox.Show("Заполните все поля!","Ошибка",MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-                }
-                else cmd.Parameters.Add(commands_to_add[i], MySqlDbType.VarChar).Value = collection_of_data[i];
-
-            }
-            dB.OpenConnectionSQL();
-            try
-            {
-                if (cmd.ExecuteNonQuery() == 1) MessageBox.Show("Успешно добавлен", "Добавлен", MessageBoxButtons.OK);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Возникла ошибка. Перепроверьте заполненные данные", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            dB.CloseConnectionSQL();
-            LoadAllData();
+            allDataGridView.DataSource = dataBase.LoadAllData();
         }
 
         private void cleanBtn_Click(object sender, EventArgs e)
@@ -130,33 +108,10 @@ namespace MonitoringMoney
             descriptionText.Text = "";
         }
 
-        private void LoadAllData()
-        {
-            dB.OpenConnectionSQL();
-            cmd = dB.mySqlConnection.CreateCommand();
-            cmd.CommandText = "SELECT * FROM `debtordb`";
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-            dataTable.Load(reader);
-            allDataGridView.DataSource = dataTable;
-            dB.CloseConnectionSQL();
-        }
-
         private void bunifuButton1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("hello world");
         }
-
-        private void toolStripTextBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStripComboBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void sumValue_Leave(object sender, EventArgs e)
         {
             try
@@ -177,66 +132,9 @@ namespace MonitoringMoney
                 allDataGridView.Columns[i].HeaderText = columnNames[i];
             }
         }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-
-        }
-
-        private void searchBtn_Click(object sender, EventArgs e)
-        {
-            //dB.OpenConnectionSQL();
-            //cmd = dB.mySqlConnection.CreateCommand();
-            //cmd.CommandText = "SELECT `Client` FROM `debtordb`";
-            //MySqlDataReader reader = cmd.ExecuteReader();
-            //reader.Read();
-            //string a = reader["Client"].ToString();
-            //MessageBox.Show(a);
-            //dB.CloseConnectionSQL();
-            //dB.OpenConnectionSQL();
-            //cmd = dB.mySqlConnection.CreateCommand();
-            //cmd.CommandText = "SELECT * FROM `debtordb` WHERE 'Client'=@client";
-            //cmd.Parameters.Add("@client", MySqlDbType.VarChar).Value = searchTextBox.Text;
-
-            //MySqlDataReader reader = cmd.ExecuteReader();
-            //dataTable.Load(reader);
-            //allDataGridView.DataSource = dataTable;
-            //dB.CloseConnectionSQL();
-
-
-            dB.OpenConnectionSQL();
-            string selectquery = "select Client from debtordb where Client='@client'";
-            MySqlCommand cmd = new MySqlCommand(selectquery, dB.getConnection());
-            cmd.Parameters.AddWithValue("@client", "Жахонгир Машарипов");
-            MySqlDataReader reader1;
-            reader1 = cmd.ExecuteReader();
-            if (reader1.Read())
-            {
-                MessageBox.Show(reader1.GetValue(0).ToString());
-            }
-            else
-            {
-                MessageBox.Show("NO DATA FOUND");
-            }
-            dB.CloseConnectionSQL();
-
-            //using (MySqlConnection connection = new MySqlConnection(...))
-            //{
-            //    connection.Open();
-            //    using (MySqlCommand cmd = new MySqlCommand("select product_price from product where product_name='@pname';", connection))
-            //    {
-            //        cmd.Parameters.AddWithValue("@pname", x);
-            //        using (MySqlDataReader reader = cmd.ExecuteReader())
-            //        {
-            //            StringBuilder sb = new StringBuilder();
-            //            while (reader.Read())
-            //                sb.Append(reader.GetInt32(0).ToString());
-
-            //            Price_label.Content = sb.ToString();
-            //        }
-            //    }
-            //}
-
+            if (e.KeyCode == Keys.Enter) addUserBtn.PerformClick();
         }
     }
 }
