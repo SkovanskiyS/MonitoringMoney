@@ -37,7 +37,7 @@ namespace MonitoringMoney
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             //dB.CloseConnectionSQL();
-            //Application.Exit();
+            //Application.Exit();s
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -135,6 +135,20 @@ namespace MonitoringMoney
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter) addUserBtn.PerformClick();
+        }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            dataBase = new DB_API(searchTextBox.Text);
+            if(searchTextBox.Text.Length > 0 )
+            {
+                allDataGridView.DataSource = dataBase.Search();
+            }
+            else
+            {
+                allDataGridView.DataSource = dataBase.LoadAllData();
+            }
+
         }
     }
 }

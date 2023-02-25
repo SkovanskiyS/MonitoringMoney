@@ -16,16 +16,22 @@ using MySql.Data.MySqlClient;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using MonitoringMoney;
 using static System.Net.Mime.MediaTypeNames;
+using Newtonsoft.Json.Linq;
+using System.Runtime.Remoting.Messaging;
+
 namespace MonitoringMoney
 {
     internal class DB_API
     {
         private MySqlConnection connection;
         private MySqlCommand cmd;
+        private MySqlDataReader reader;
         private DataTable dataTable;
-        public DB_API()
+        private string name_to_search;
+        public DB_API(string name = "Undefined")
         {
             Initialize();
+            name_to_search = name;
         }
 
         private void Initialize()
@@ -54,7 +60,7 @@ namespace MonitoringMoney
             connection.Open();
             try
             {
-                if (cmd.ExecuteNonQuery() == 1) MessageBox.Show("Успешно добавлен", "Добавлен", MessageBoxButtons.OK);
+                if (cmd.ExecuteNonQuery() == 1) MessageBox.Show("Успешно добавлен", "Добавлен", MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -83,5 +89,62 @@ namespace MonitoringMoney
             return dataTable;
         }
 
+        public DataTable Search()
+        {
+
+            var found_users = FindUsers();
+
+            connection.Open();
+            dataTable = new DataTable();
+            cmd = new MySqlCommand("select * from debtordb where ID=@id", connection);
+            cmd.Parameters.AddWithValue("@id", found_users[0]);
+            reader = cmd.ExecuteReader();
+            dataTable.Load(reader);
+            var list_of_found_user = new List<string>();
+            //while (reader.Read())
+            //{
+            //    for (int i = 0; i < reader.FieldCount; i++)
+            //    {
+            //        list_of_found_user.Add(reader.GetValue(i).ToString());
+            //    }
+            //}
+            return dataTable;
+        }
+
+        private List<object> GetAllData()
+        {
+            connection.Open();
+            string sql_cmd = @"SELECT * FROM debtordb";
+            var cmd = new MySqlCommand(sql_cmd, connection);
+            reader = cmd.ExecuteReader();
+
+            var values = new List<object>();
+            var ID = new List<object>();
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    values.Add(reader.GetValue(i));
+                }
+            }
+            connection.Close();
+            return values;
+        }
+
+        private List<object> FindUsers()
+        {
+            var values = GetAllData();
+            var ID = new List<object>();
+            foreach (var item in values)
+            {
+                if (item.ToString().ToLower().Contains(name_to_search))
+                {
+                    object index_of_ID = values[values.IndexOf(item) - 2];
+                    ID.Add(index_of_ID);
+                }
+
+            }
+            return ID;
+        }
     }
 }
