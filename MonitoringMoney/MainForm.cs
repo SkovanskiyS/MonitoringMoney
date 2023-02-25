@@ -15,6 +15,8 @@ using Bunifu.UI.WinForms;
 using MySql.Data.MySqlClient;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using MonitoringMoney;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace MonitoringMoney
 {
     public partial class MainForm : Form
@@ -31,7 +33,8 @@ namespace MonitoringMoney
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Application.Exit();
+            //dB.CloseConnectionSQL();
+            //Application.Exit();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -111,7 +114,6 @@ namespace MonitoringMoney
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
                 MessageBox.Show("Возникла ошибка. Перепроверьте заполненные данные", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             dB.CloseConnectionSQL();
@@ -137,6 +139,7 @@ namespace MonitoringMoney
             MySqlDataReader reader = cmd.ExecuteReader();
             dataTable.Load(reader);
             allDataGridView.DataSource = dataTable;
+            dB.CloseConnectionSQL();
         }
 
         private void bunifuButton1_Click(object sender, EventArgs e)
@@ -173,6 +176,67 @@ namespace MonitoringMoney
             {
                 allDataGridView.Columns[i].HeaderText = columnNames[i];
             }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            //dB.OpenConnectionSQL();
+            //cmd = dB.mySqlConnection.CreateCommand();
+            //cmd.CommandText = "SELECT `Client` FROM `debtordb`";
+            //MySqlDataReader reader = cmd.ExecuteReader();
+            //reader.Read();
+            //string a = reader["Client"].ToString();
+            //MessageBox.Show(a);
+            //dB.CloseConnectionSQL();
+            //dB.OpenConnectionSQL();
+            //cmd = dB.mySqlConnection.CreateCommand();
+            //cmd.CommandText = "SELECT * FROM `debtordb` WHERE 'Client'=@client";
+            //cmd.Parameters.Add("@client", MySqlDbType.VarChar).Value = searchTextBox.Text;
+
+            //MySqlDataReader reader = cmd.ExecuteReader();
+            //dataTable.Load(reader);
+            //allDataGridView.DataSource = dataTable;
+            //dB.CloseConnectionSQL();
+
+
+            dB.OpenConnectionSQL();
+            string selectquery = "select Client from debtordb where Client='@client'";
+            MySqlCommand cmd = new MySqlCommand(selectquery, dB.getConnection());
+            cmd.Parameters.AddWithValue("@client", "Жахонгир Машарипов");
+            MySqlDataReader reader1;
+            reader1 = cmd.ExecuteReader();
+            if (reader1.Read())
+            {
+                MessageBox.Show(reader1.GetValue(0).ToString());
+            }
+            else
+            {
+                MessageBox.Show("NO DATA FOUND");
+            }
+            dB.CloseConnectionSQL();
+
+            //using (MySqlConnection connection = new MySqlConnection(...))
+            //{
+            //    connection.Open();
+            //    using (MySqlCommand cmd = new MySqlCommand("select product_price from product where product_name='@pname';", connection))
+            //    {
+            //        cmd.Parameters.AddWithValue("@pname", x);
+            //        using (MySqlDataReader reader = cmd.ExecuteReader())
+            //        {
+            //            StringBuilder sb = new StringBuilder();
+            //            while (reader.Read())
+            //                sb.Append(reader.GetInt32(0).ToString());
+
+            //            Price_label.Content = sb.ToString();
+            //        }
+            //    }
+            //}
+
         }
     }
 }
