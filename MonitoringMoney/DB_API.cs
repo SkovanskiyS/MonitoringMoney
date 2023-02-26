@@ -28,6 +28,7 @@ namespace MonitoringMoney
         private MySqlDataReader reader;
         private DataTable dataTable;
         private string name_to_search;
+        private string connection_text = @"server=localhost;port=3306;username=root;password=root;database=debtorddatabase";
         public DB_API(string name = "Undefined")
         {
             Initialize();
@@ -36,7 +37,7 @@ namespace MonitoringMoney
 
         private void Initialize()
         {
-            connection = new MySqlConnection(@"server=localhost;port=3306;username=root;password=root;database=debtorddatabase");
+            connection = new MySqlConnection(connection_text);
         }
         public void Insert(string date_of_reg,string client_name,string get_dive,string currency_,string sumValue,string wellText,string cash_transfer,string descriptionText,bool textbox_status)
         {
@@ -89,37 +90,55 @@ namespace MonitoringMoney
             return dataTable;
         }
 
-        public DataTable Search()
+        public DataTable Search(string a)
         {
-
-            var found_users = FindUsers();
-
-            connection.Open();
+            var found_users = FindUsers(); //{50,51,52,52}
             dataTable = new DataTable();
-            cmd = new MySqlCommand("select * from debtordb where ID=@id", connection);
-            cmd.Parameters.AddWithValue("@id", found_users[0]);
-            reader = cmd.ExecuteReader();
-            dataTable.Load(reader);
-            var list_of_found_user = new List<string>();
-            //while (reader.Read())
-            //{
-            //    for (int i = 0; i < reader.FieldCount; i++)
-            //    {
-            //        list_of_found_user.Add(reader.GetValue(i).ToString());
-            //    }
-            //}
+            DataTable emptyDataTable = new DataTable();   
+            connection.Open();
+
+            string query = "select * from debtordb where ID in (";
+            for (int i = 0; i < found_users.Count; i++)
+            {
+                query += "@id" + i.ToString() + ",";
+            }
+            //Remove the last comma
+            query = query.Remove(query.Length - 1);
+            query += ")";
+
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    for (int i = 0; i < found_users.Count; i++)
+                    {
+                        command.Parameters.AddWithValue("@id" + i.ToString(), found_users[i]);
+                    }
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        dataTable.Load(reader);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+               
+            }
+
+           // MessageBox.Show("Ничего не найдено!", "Пусто", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             return dataTable;
         }
 
         private List<object> GetAllData()
         {
             connection.Open();
-            string sql_cmd = @"SELECT * FROM debtordb";
+            string sql_cmd = @"SELECT `Client`,`ID` FROM debtordb";
             var cmd = new MySqlCommand(sql_cmd, connection);
-            reader = cmd.ExecuteReader();
-
+            MySqlDataReader reader;
+            reader = cmd.ExecuteReader(); 
             var values = new List<object>();
-            var ID = new List<object>();
             while (reader.Read())
             {
                 for (int i = 0; i < reader.FieldCount; i++)
@@ -135,16 +154,44 @@ namespace MonitoringMoney
         {
             var values = GetAllData();
             var ID = new List<object>();
-            foreach (var item in values)
+
+            
+            for (int i = 0; i < values.Count; i++)
             {
-                if (item.ToString().ToLower().Contains(name_to_search))
+                int n;
+                bool isNumeric = int.TryParse(Convert.ToString(values[i]), out n);
+
+                if (!isNumeric)
                 {
-                    object index_of_ID = values[values.IndexOf(item) - 2];
-                    ID.Add(index_of_ID);
+                    if (values[i].ToString().ToLower().Contains(name_to_search))
+                    {
+                        try
+                        {
+                            object index_of_ID = values[i + 1];
+                            ID.Add(index_of_ID);
+
+                        }
+                        catch (Exception)
+                        { }
+                    }
                 }
+            }
+
+            return ID;
+        }
+
+        public int GetCountOfObjects()
+        {
+            string sqlExpression = "SELECT COUNT(*) FROM debtordb";
+            using (MySqlConnection connection = new MySqlConnection(connection_text))
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(sqlExpression, connection);
+                object count = command.ExecuteScalar();
+
+                return Convert.ToInt32(count);
 
             }
-            return ID;
         }
     }
 }

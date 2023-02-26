@@ -49,6 +49,7 @@ namespace MonitoringMoney
             dataBase = new DB_API();
             allDataGridView.DataSource = dataBase.LoadAllData();
             ChangeColumnName();
+            countOfUsersLabel.Text = Convert.ToString(dataBase.GetCountOfObjects());
             this.KeyPreview = true;
         }
 
@@ -137,18 +138,17 @@ namespace MonitoringMoney
             if (e.KeyCode == Keys.Enter) addUserBtn.PerformClick();
         }
 
-        private void searchBtn_Click(object sender, EventArgs e)
+        private void searchTextBox_TextChange(object sender, EventArgs e)
         {
             dataBase = new DB_API(searchTextBox.Text);
-            if(searchTextBox.Text.Length > 0 )
+            if (searchTextBox.Text.Length > 0)
             {
-                allDataGridView.DataSource = dataBase.Search();
+                allDataGridView.DataSource = dataBase.Search(searchTextBox.Text);
             }
             else
             {
                 allDataGridView.DataSource = dataBase.LoadAllData();
             }
-
         }
     }
 }
