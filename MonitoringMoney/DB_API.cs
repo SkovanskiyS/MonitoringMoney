@@ -11,7 +11,6 @@ namespace MonitoringMoney
     {
         private MySqlConnection connection;
         private MySqlCommand cmd;
-        private MySqlDataReader reader;
         private DataTable dataTable;
         private string name_to_search;
         private string connection_text = @"server=localhost;port=3306;username=root;password=root;database=debtorddatabase";
@@ -31,7 +30,7 @@ namespace MonitoringMoney
             //cmd = new MySqlCommand("UPDATE `debtordb` SET `Date`=@date,`Client`=@client,`Exchange`=@exchange,`Currency`=@currency,`Amount`=@amount,`Rate`=@rate,`Transaction`=@transaction,`Description`=@description WHERE 1", dB.getConnection());
 
             //0 - date, 1 - client name, 2 - give or get, 3 - currency, 4 - amount(sum), 5 - rate(well), 6 - transaction(cash or transfer), 7 - description
-            object[] collection_of_data = { date_of_reg.ToShortDateString(), client_name, get_dive, currency_, sumValue, wellText, cash_transfer, descriptionText };
+            object[] collection_of_data = { date_of_reg.ToString("yyyy-MM-dd"), client_name, get_dive, currency_, sumValue, wellText, cash_transfer, descriptionText };
             string[] commands_to_add = { "@date", "@client", "@exchange", "@currency", "@amount", "@rate", "@transaction", "@description" };
             for (int i = 0; i < collection_of_data.Length; i++)
             {
@@ -202,19 +201,20 @@ namespace MonitoringMoney
             return dataTable;
         }
 
-        public DataTable FilterByDate(string from,string to)
+        public DataTable FilterByDate(DateTime from,DateTime to)
         {
             if (connection.State == ConnectionState.Closed)
             {
                 connection.Open();
             }
             string query = @"select * from debtordb where Date between @from and @to";
+            //string query = @"select * from debtordb where Date between STR_TO_DATE(@from,'%Y-%m-%d') and STR_TO_DATE(@to,'%Y-%m-%d')";
+            //string query = @"select * from debtordb where Date between '2000-02-16' and '2023-02-26'";
             dataTable = new DataTable();
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
-                MessageBox.Show(from);
-                command.Parameters.AddWithValue("@from", from);
-                command.Parameters.AddWithValue("@to", to);
+                command.Parameters.AddWithValue("@from", from.ToString("yyyy-MM-dd"));
+                command.Parameters.AddWithValue("@to", to.ToString("yyyy-MM-dd"));
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     dataTable.Load(reader);

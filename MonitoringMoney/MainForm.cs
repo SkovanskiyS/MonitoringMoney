@@ -80,7 +80,7 @@ namespace MonitoringMoney
         private void addUserBtn_Click(object sender, EventArgs e)
         {
             dataBase = new DB_API();
-            dataBase.Insert(DateTime.Parse(dateOfReg.Value.ToShortDateString()), clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text,wellText.Enabled);
+            dataBase.Insert(dateOfReg.Value.Date, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text,wellText.Enabled);
             allDataGridView.DataSource = dataBase.LoadAllData();
         }
 
@@ -165,7 +165,7 @@ namespace MonitoringMoney
 
         private void applyBtn_Click(object sender, EventArgs e)
         {
-            allDataGridView.DataSource = dataBase.FilterByDate(dateFrom.Value.ToShortDateString(),dateTo.Value.ToShortDateString());
+            allDataGridView.DataSource = dataBase.FilterByDate(dateFrom.Value.Date,dateTo.Value.Date);
         }
 
         private void resetDate_Click(object sender, EventArgs e)
