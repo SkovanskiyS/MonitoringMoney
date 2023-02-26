@@ -1,23 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Bunifu.UI.WinForms;
 using MySql.Data.MySqlClient;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using MonitoringMoney;
-using static System.Net.Mime.MediaTypeNames;
-using Mysqlx.Crud;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace MonitoringMoney
 {
@@ -37,7 +23,7 @@ namespace MonitoringMoney
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             //dB.CloseConnectionSQL();
-            //Application.Exit();s
+            //Application.Exit();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -94,8 +80,7 @@ namespace MonitoringMoney
         private void addUserBtn_Click(object sender, EventArgs e)
         {
             dataBase = new DB_API();
-            dataBase.Insert(dateOfReg.Text, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text,wellText.Enabled);
-
+            dataBase.Insert(DateTime.Parse(dateOfReg.Value.ToShortDateString()), clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text,wellText.Enabled);
             allDataGridView.DataSource = dataBase.LoadAllData();
         }
 
@@ -153,14 +138,42 @@ namespace MonitoringMoney
 
         private void searchBtn_Click(object sender, EventArgs e)
         {
-            if(get_checkbox.Checked && give_checkbox.Checked)
+
+        }
+
+        private void give_checkbox_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckBox();
+        }
+
+        private void FilterCheckBox()
+        {
+            if(get_checkbox.Checked && give_checkbox.Checked||!get_checkbox.Checked&&!give_checkbox.Checked)
             {
                 allDataGridView.DataSource = dataBase.LoadAllData();
             }
             else
             {
-                allDataGridView.DataSource = get_checkbox.Checked ? dataBase.FilterGetOrGive(true) : allDataGridView.DataSource = dataBase.FilterGetOrGive(false);
+                allDataGridView.DataSource = get_checkbox.Checked? dataBase.FilterGetOrGive(true) : allDataGridView.DataSource = dataBase.FilterGetOrGive(false);
             }
+        }
+
+        private void get_checkbox_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckBox();
+        }
+
+        private void applyBtn_Click(object sender, EventArgs e)
+        {
+            allDataGridView.DataSource = dataBase.FilterByDate(dateFrom.Value.ToShortDateString(),dateTo.Value.ToShortDateString());
+        }
+
+        private void resetDate_Click(object sender, EventArgs e)
+        {
+            allDataGridView.DataSource = dataBase.LoadAllData();
+            var dateToday = DateTime.Now;
+            dateFrom.Value = DateTime.Parse(dateToday.ToShortDateString());
+            dateTo.Value = DateTime.Parse(dateToday.ToShortDateString());
         }
     }
 }

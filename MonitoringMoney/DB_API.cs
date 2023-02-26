@@ -2,22 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Bunifu.UI.WinForms;
 using MySql.Data.MySqlClient;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using MonitoringMoney;
-using static System.Net.Mime.MediaTypeNames;
-using Newtonsoft.Json.Linq;
-using System.Runtime.Remoting.Messaging;
 
 namespace MonitoringMoney
 {
@@ -39,18 +25,18 @@ namespace MonitoringMoney
         {
             connection = new MySqlConnection(connection_text);
         }
-        public void Insert(string date_of_reg,string client_name,string get_dive,string currency_,string sumValue,string wellText,string cash_transfer,string descriptionText,bool textbox_status)
+        public void Insert(DateTime date_of_reg,string client_name,string get_dive,string currency_,string sumValue,string wellText,string cash_transfer,string descriptionText,bool textbox_status)
         {
             cmd = new MySqlCommand("INSERT INTO `debtordb`(`Date`, `Client`, `Exchange`, `Currency`, `Amount`, `Rate`, `Transaction`, `Description`) VALUES (@date,@client,@exchange,@currency,@amount,@rate,@transaction,@description)", connection);
             //cmd = new MySqlCommand("UPDATE `debtordb` SET `Date`=@date,`Client`=@client,`Exchange`=@exchange,`Currency`=@currency,`Amount`=@amount,`Rate`=@rate,`Transaction`=@transaction,`Description`=@description WHERE 1", dB.getConnection());
 
             //0 - date, 1 - client name, 2 - give or get, 3 - currency, 4 - amount(sum), 5 - rate(well), 6 - transaction(cash or transfer), 7 - description
-            string[] collection_of_data = { date_of_reg, client_name, get_dive, currency_, sumValue, wellText, cash_transfer, descriptionText };
+            object[] collection_of_data = { date_of_reg.ToShortDateString(), client_name, get_dive, currency_, sumValue, wellText, cash_transfer, descriptionText };
             string[] commands_to_add = { "@date", "@client", "@exchange", "@currency", "@amount", "@rate", "@transaction", "@description" };
             for (int i = 0; i < collection_of_data.Length; i++)
             {
-                if (collection_of_data[5] == "" && textbox_status == false) collection_of_data[5] = "Пусто";
-                if (collection_of_data[i] == null || collection_of_data[i].Length == 0)
+                if (collection_of_data[5].ToString() == "" && textbox_status == false) collection_of_data[5] = "Пусто";
+                if (collection_of_data[i] == null || collection_of_data[i].ToString().Length == 0)
                 {
                     MessageBox.Show("Заполните все поля!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
@@ -65,6 +51,7 @@ namespace MonitoringMoney
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Возникла ошибка. Перепроверьте заполненные данные", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             connection.Close();
@@ -90,7 +77,7 @@ namespace MonitoringMoney
             return dataTable;
         }
 
-        public DataTable Search()
+        public DataTable Search(string a)
         {
             var found_users = FindUsers(); 
             dataTable = new DataTable();
@@ -209,6 +196,28 @@ namespace MonitoringMoney
                 using(MySqlDataReader reader = command.ExecuteReader())
                 {
                      dataTable.Load(reader);
+                }
+            }
+            connection.Close();
+            return dataTable;
+        }
+
+        public DataTable FilterByDate(string from,string to)
+        {
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+            string query = @"select * from debtordb where Date between @from and @to";
+            dataTable = new DataTable();
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                MessageBox.Show(from);
+                command.Parameters.AddWithValue("@from", from);
+                command.Parameters.AddWithValue("@to", to);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    dataTable.Load(reader);
                 }
             }
             connection.Close();
