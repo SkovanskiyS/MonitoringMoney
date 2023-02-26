@@ -150,6 +150,18 @@ namespace MonitoringMoney
                 allDataGridView.DataSource = dataBase.LoadAllData();
             }
         }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            if(get_checkbox.Checked && give_checkbox.Checked)
+            {
+                allDataGridView.DataSource = dataBase.LoadAllData();
+            }
+            else
+            {
+                allDataGridView.DataSource = get_checkbox.Checked ? dataBase.FilterGetOrGive(true) : allDataGridView.DataSource = dataBase.FilterGetOrGive(false);
+            }
+        }
     }
 }
 

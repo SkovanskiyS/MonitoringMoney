@@ -90,9 +90,9 @@ namespace MonitoringMoney
             return dataTable;
         }
 
-        public DataTable Search(string a)
+        public DataTable Search()
         {
-            var found_users = FindUsers(); //{50,51,52,52}
+            var found_users = FindUsers(); 
             dataTable = new DataTable();
             DataTable emptyDataTable = new DataTable();   
             connection.Open();
@@ -119,21 +119,21 @@ namespace MonitoringMoney
                         dataTable.Load(reader);
                     }
                 }
-
             }
             catch (Exception)
             {
-               
+                
             }
-
            // MessageBox.Show("Ничего не найдено!", "Пусто", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
             return dataTable;
         }
 
         private List<object> GetAllData()
         {
-            connection.Open();
+            if(connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+            }
             string sql_cmd = @"SELECT `Client`,`ID` FROM debtordb";
             var cmd = new MySqlCommand(sql_cmd, connection);
             MySqlDataReader reader;
@@ -155,7 +155,6 @@ namespace MonitoringMoney
             var values = GetAllData();
             var ID = new List<object>();
 
-            
             for (int i = 0; i < values.Count; i++)
             {
                 int n;
@@ -176,7 +175,6 @@ namespace MonitoringMoney
                     }
                 }
             }
-
             return ID;
         }
 
@@ -192,6 +190,29 @@ namespace MonitoringMoney
                 return Convert.ToInt32(count);
 
             }
+        }
+
+        public DataTable FilterGetOrGive(bool isGet)
+        {
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+            string query = @"select * from debtordb where Exchange=@exchange";
+            dataTable = new DataTable();
+            using (MySqlCommand command = new MySqlCommand(query,connection))
+            {
+                if (isGet)
+                    command.Parameters.AddWithValue("@exchange", "Взял (одолжил)");
+                else
+                    command.Parameters.AddWithValue("@exchange", "Дал (занял)");
+                using(MySqlDataReader reader = command.ExecuteReader())
+                {
+                     dataTable.Load(reader);
+                }
+            }
+            connection.Close();
+            return dataTable;
         }
     }
 }
