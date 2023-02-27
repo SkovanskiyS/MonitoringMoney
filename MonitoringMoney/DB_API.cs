@@ -201,7 +201,7 @@ namespace MonitoringMoney
             return dataTable;
         }
 
-        public DataTable FilterByDate(DateTime from,DateTime to)
+        public DataTable FilterByDate(DateTime from,DateTime to,DataTable search)
         {
             if (connection.State == ConnectionState.Closed)
             {
@@ -210,7 +210,7 @@ namespace MonitoringMoney
             string query = @"select * from debtordb where Date between @from and @to";
             //string query = @"select * from debtordb where Date between STR_TO_DATE(@from,'%Y-%m-%d') and STR_TO_DATE(@to,'%Y-%m-%d')";
             //string query = @"select * from debtordb where Date between '2000-02-16' and '2023-02-26'";
-            dataTable = new DataTable();
+            dataTable = search;
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@from", from.ToString("yyyy-MM-dd"));

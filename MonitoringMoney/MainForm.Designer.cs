@@ -112,12 +112,13 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileStrip,
             this.statisticDropDown});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1275, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1275, 27);
             this.toolStrip1.TabIndex = 10;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -128,7 +129,7 @@
             this.fileStrip.Image = global::MonitoringMoney.Properties.Resources.file;
             this.fileStrip.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.fileStrip.Name = "fileStrip";
-            this.fileStrip.Size = new System.Drawing.Size(65, 22);
+            this.fileStrip.Size = new System.Drawing.Size(69, 24);
             this.fileStrip.Text = "Файл";
             this.fileStrip.ToolTipText = "Файл";
             // 
@@ -146,7 +147,7 @@
             this.statisticDropDown.Image = global::MonitoringMoney.Properties.Resources.statistic;
             this.statisticDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.statisticDropDown.Name = "statisticDropDown";
-            this.statisticDropDown.Size = new System.Drawing.Size(97, 22);
+            this.statisticDropDown.Size = new System.Drawing.Size(101, 24);
             this.statisticDropDown.Text = "Статистика";
             // 
             // мойПрофильToolStripMenuItem1
@@ -993,7 +994,7 @@
             this.getCheckBox2.CheckState = Bunifu.UI.WinForms.BunifuCheckBox.CheckStates.Checked;
             this.getCheckBox2.Cursor = System.Windows.Forms.Cursors.Default;
             this.getCheckBox2.CustomCheckmarkImage = null;
-            this.getCheckBox2.Location = new System.Drawing.Point(32433, 32550);
+            this.getCheckBox2.Location = new System.Drawing.Point(24552, 26535);
             this.getCheckBox2.MinimumSize = new System.Drawing.Size(17, 17);
             this.getCheckBox2.Name = "getCheckBox2";
             this.getCheckBox2.OnCheck.BorderColor = System.Drawing.Color.DodgerBlue;
@@ -1257,6 +1258,7 @@
             this.allDataGridView.Name = "allDataGridView";
             this.allDataGridView.ReadOnly = true;
             this.allDataGridView.RowHeadersVisible = false;
+            this.allDataGridView.RowHeadersWidth = 51;
             this.allDataGridView.RowTemplate.Height = 40;
             this.allDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.allDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -1492,12 +1494,12 @@
             this.bunifuLabel11.Cursor = System.Windows.Forms.Cursors.Default;
             this.bunifuLabel11.CursorType = System.Windows.Forms.Cursors.Default;
             this.bunifuLabel11.Font = new System.Drawing.Font("Calibri", 14.12F);
-            this.bunifuLabel11.Location = new System.Drawing.Point(237, 189);
+            this.bunifuLabel11.Location = new System.Drawing.Point(229, 189);
             this.bunifuLabel11.Name = "bunifuLabel11";
             this.bunifuLabel11.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.bunifuLabel11.Size = new System.Drawing.Size(13, 19);
+            this.bunifuLabel11.Size = new System.Drawing.Size(21, 19);
             this.bunifuLabel11.TabIndex = 39;
-            this.bunifuLabel11.Text = "C:";
+            this.bunifuLabel11.Text = "От:";
             this.bunifuLabel11.TextAlignment = System.Drawing.ContentAlignment.TopLeft;
             this.bunifuLabel11.TextFormat = Bunifu.UI.WinForms.BunifuLabel.TextFormattingOptions.Default;
             // 

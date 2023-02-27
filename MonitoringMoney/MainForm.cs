@@ -165,7 +165,10 @@ namespace MonitoringMoney
 
         private void applyBtn_Click(object sender, EventArgs e)
         {
-            allDataGridView.DataSource = dataBase.FilterByDate(dateFrom.Value.Date,dateTo.Value.Date);
+
+            allDataGridView.DataSource = dataBase.FilterByDate(dateFrom.Value.Date, dateTo.Value.Date, dataBase.Search("undefined"));
+
+
         }
 
         private void resetDate_Click(object sender, EventArgs e)
