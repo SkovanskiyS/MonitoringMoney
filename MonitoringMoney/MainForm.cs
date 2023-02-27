@@ -35,7 +35,7 @@ namespace MonitoringMoney
             dataBase = new DB_API();
             allDataGridView.DataSource = dataBase.LoadAllData();
             ChangeColumnName();
-            countOfUsersLabel.Text = Convert.ToString(dataBase.GetCountOfObjects());
+            countOfUsersLabel.Text = Convert.ToString(allDataGridView.RowCount);
             this.KeyPreview = true;
         }
 
@@ -77,13 +77,6 @@ namespace MonitoringMoney
             wellText.Enabled = Convert.ToString(currency_Dropdown.SelectedItem) == "USD $" ? true : false;
         }
 
-        private void addUserBtn_Click(object sender, EventArgs e)
-        {
-            dataBase = new DB_API();
-            dataBase.Insert(dateOfReg.Value.Date, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text,wellText.Enabled);
-            allDataGridView.DataSource = dataBase.LoadAllData();
-        }
-
         private void cleanBtn_Click(object sender, EventArgs e)
         {
             object[] textboxValues = { sumValue, clientNameT, wellText};
@@ -120,10 +113,24 @@ namespace MonitoringMoney
         }
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) addUserBtn.PerformClick();
+            if (e.KeyCode == Keys.Enter) addBtn.PerformClick();
         }
 
         private void searchTextBox_TextChange(object sender, EventArgs e)
+        {
+            //dataBase = new DB_API(searchTextBox.Text);
+            //if (searchTextBox.Text.Length > 0)
+            //{
+            //    allDataGridView.DataSource = dataBase.Search(searchTextBox.Text);
+            //}
+            //else
+            //{
+            //    allDataGridView.DataSource = dataBase.LoadAllData();
+            //}
+
+        }
+
+        private void searchBtn_Click(object sender, EventArgs e)
         {
             dataBase = new DB_API(searchTextBox.Text);
             if (searchTextBox.Text.Length > 0)
@@ -134,11 +141,6 @@ namespace MonitoringMoney
             {
                 allDataGridView.DataSource = dataBase.LoadAllData();
             }
-        }
-
-        private void searchBtn_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void give_checkbox_CheckedChanged(object sender, EventArgs e)
@@ -177,6 +179,47 @@ namespace MonitoringMoney
             var dateToday = DateTime.Now;
             dateFrom.Value = DateTime.Parse(dateToday.ToShortDateString());
             dateTo.Value = DateTime.Parse(dateToday.ToShortDateString());
+        }
+
+        private void allDataGridView_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
+        {
+           countOfUsersLabel.Text = Convert.ToString(allDataGridView.RowCount);
+        }
+
+        private void applyBtn2_Click(object sender, EventArgs e)
+        {
+            allDataGridView.DataSource = dataBase.FilterByDate(dateFrom.Value.Date, dateTo.Value.Date, dataBase.Search("undefined"));
+
+        }
+
+        private void resetBtn_Click(object sender, EventArgs e)
+        {
+            allDataGridView.DataSource = dataBase.LoadAllData();
+            var dateToday = DateTime.Now;
+            dateFrom.Value = DateTime.Parse(dateToday.ToShortDateString());
+            dateTo.Value = DateTime.Parse(dateToday.ToShortDateString());
+        }
+
+        private void addBtn_Click(object sender, EventArgs e)
+        {
+            dataBase = new DB_API();
+            dataBase.Insert(dateOfReg.Value.Date, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text, wellText.Enabled);
+            allDataGridView.DataSource = dataBase.LoadAllData();
+        }
+
+        private void cleanData_Click(object sender, EventArgs e)
+        {
+            object[] textboxValues = { sumValue, clientNameT, wellText };
+            foreach (BunifuTextBox item in textboxValues)
+            {
+                item.Text = "";
+            }
+            descriptionText.Text = "";
+        }
+
+        private void мойПрофильToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
