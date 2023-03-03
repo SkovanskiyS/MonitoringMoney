@@ -10,6 +10,8 @@ using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
+using Newtonsoft.Json.Linq;
+using static IronPython.Modules._ast;
 
 namespace MonitoringMoney
 {
@@ -92,6 +94,33 @@ namespace MonitoringMoney
             }
             return 0;
 
+        }
+
+
+        public Dictionary<object, List<object>> Get_Name_And_Amount()
+        {
+            string query = "select `Client`,`Amount` from debtordb";
+            Dictionary<object, List<object>> data = new Dictionary<object, List<object>>();
+
+            connection.Open();
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (data.ContainsKey(reader.GetString(0)))
+                        {
+                            data[reader.GetString(0)].Add(reader.GetString(1));
+                        }
+                        else
+                        {
+                            data.Add(reader.GetString(0), new List<object>() { reader.GetString(1) });
+                        }
+                    }
+                }
+            }
+            return data;
         }
 
 

@@ -154,7 +154,7 @@
             // 
             this.мойПрофильToolStripMenuItem1.Image = global::MonitoringMoney.Properties.Resources.profile;
             this.мойПрофильToolStripMenuItem1.Name = "мойПрофильToolStripMenuItem1";
-            this.мойПрофильToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
+            this.мойПрофильToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.мойПрофильToolStripMenuItem1.Text = "Мой профиль";
             this.мойПрофильToolStripMenuItem1.Click += new System.EventHandler(this.мойПрофильToolStripMenuItem1_Click);
             // 

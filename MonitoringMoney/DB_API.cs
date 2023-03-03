@@ -107,7 +107,7 @@ namespace MonitoringMoney
             }
             catch (Exception)
             {
-                
+            
             }
            // MessageBox.Show("Ничего не найдено!", "Пусто", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return dataTable;

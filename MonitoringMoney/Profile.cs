@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bunifu.Charts.WinForms;
+using Bunifu.Dataviz.WinForms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace MonitoringMoney
 {
@@ -23,7 +26,7 @@ namespace MonitoringMoney
             spendGridView.DataSource = db_api.Spends();
             MessageBox.Show(db_api.WholeSpends().ToString());
             ChangeColumn();
-
+            FilerData();
         }
 
         private void bunifuLabel4_Click(object sender, EventArgs e)
@@ -50,5 +53,63 @@ namespace MonitoringMoney
         {
 
         }
+
+        private void showUserBtn_Click(object sender, EventArgs e)
+        {
+
+            if (showUserBtn.Text == "Скрыть всех")
+            {
+              //  spendGridView.Visible = false;
+                showUserBtn.Text = "Показать всех";
+                //663
+                while (dataPanel.Location.Y!=682)
+                {
+                    int Y = dataPanel.Location.Y;
+                    int btnY = showUserBtn.Location.Y;
+                    dataPanel.Location = new Point(0, Y+=1);
+                    showUserBtn.Location = new Point(0, btnY += 1);
+                }
+
+            }
+            else
+            {
+                //  spendGridView.Visible = true;
+                while (dataPanel.Location.Y != 511)
+                {
+                    int Y = dataPanel.Location.Y;
+                    int btnY = showUserBtn.Location.Y;
+                    dataPanel.Location = new Point(0, Y -= 1);
+                    showUserBtn.Location = new Point(0, btnY -= 1);
+                }
+                showUserBtn.Text = "Скрыть всех";
+            }
+        }
+
+        private void Render_BarChart()
+        {
+            var all_data = db_api.Get_Name_And_Amount();
+           
+            for (int i = 0; i < all_data.Count; i++)
+            {
+                barChart.Series["Users"].Points.AddXY(all_data);
+            }
+
+
+        }
+        
+        private void FilerData()
+        {
+            var all_data = db_api.Get_Name_And_Amount();
+            var double_list = new List<double>();
+            var filteredData = new Dictionary<string, List<double>>();
+
+            for (int i = 0; i < all_data.Values.Count; i++)
+            {
+                MessageBox.Show(all_data[i].ToString());
+            }
+
+        }
+
+
     }
 }
