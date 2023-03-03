@@ -101,7 +101,7 @@ namespace MonitoringMoney
             {}
         }
 
-        private void ChangeColumnName()
+        public void ChangeColumnName()
         {
 
             string[] columnNames = { "ID", "Дата", "Клиент", "Обмен", "Валюта", "Сумма", "Курс", "Транзакция","Описание"};
@@ -218,6 +218,12 @@ namespace MonitoringMoney
         }
 
         private void мойПрофильToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Profile profile = new Profile();
+            profile.Show();
+        }
+
+        private void allDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

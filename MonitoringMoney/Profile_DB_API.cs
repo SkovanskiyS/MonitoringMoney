@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 using System.IO;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace MonitoringMoney
 {
     internal class Profile_DB_API
@@ -43,7 +45,7 @@ namespace MonitoringMoney
         }
 
 
-        public int WholeSpends()
+        public object WholeSpends()
         {
             string query = "select `Amount` from debtordb";
             connection.Open();
@@ -65,25 +67,33 @@ namespace MonitoringMoney
 
             for (int i = 0; i < all_amount.Count; i++)
             {
-                
+               // MessageBox.Show(all_amount[i].ToString());
             }
-
             connection.Close();
-            GetCurrency();
-            return 1;
+            return GetCurrency();
         }
 
 
 
-        private void GetCurrency()
+        private double GetCurrency()
         {
-            ScriptEngine engine = Python.CreateEngine();
-            //current path
-            string python_path = (Directory.GetParent( Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName)+ @"\parsing\main.py";
+            try
+            {
+                var timeoutInMilliseconds = 5000;
+                var uri = new Uri("https://bank.uz/currency");
+                var doc = Supremes.Dcsoup.Parse(uri, timeoutInMilliseconds);
+                var ratingSpan = doc.Select("span[class=medium-text]");
+                double currency = double.Parse(ratingSpan.Text.Substring(23, 9).Replace(".", ","));
+                return currency;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return 0;
 
-           // MessageBox.Show(python_path);
-            
-            engine.ExecuteFile(python_path);
         }
+
+
     }
 }

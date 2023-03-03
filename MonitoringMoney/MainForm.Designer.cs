@@ -154,7 +154,7 @@
             // 
             this.мойПрофильToolStripMenuItem1.Image = global::MonitoringMoney.Properties.Resources.profile;
             this.мойПрофильToolStripMenuItem1.Name = "мойПрофильToolStripMenuItem1";
-            this.мойПрофильToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.мойПрофильToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
             this.мойПрофильToolStripMenuItem1.Text = "Мой профиль";
             this.мойПрофильToolStripMenuItem1.Click += new System.EventHandler(this.мойПрофильToolStripMenuItem1_Click);
             // 
@@ -1273,6 +1273,7 @@
             this.allDataGridView.Size = new System.Drawing.Size(1275, 483);
             this.allDataGridView.TabIndex = 7;
             this.allDataGridView.Theme = Bunifu.UI.WinForms.BunifuDataGridView.PresetThemes.Light;
+            this.allDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.allDataGridView_CellContentClick);
             this.allDataGridView.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.allDataGridView_RowStateChanged);
             // 
             // get_checkbox
