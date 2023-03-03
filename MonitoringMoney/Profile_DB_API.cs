@@ -97,10 +97,10 @@ namespace MonitoringMoney
         }
 
 
-        public Dictionary<object, List<object>> Get_Name_And_Amount()
+        public Dictionary<object, List<double>> Get_Name_And_Amount()
         {
             string query = "select `Client`,`Amount` from debtordb";
-            Dictionary<object, List<object>> data = new Dictionary<object, List<object>>();
+            Dictionary<object, List<double>> data = new Dictionary<object, List<double>>();
 
             connection.Open();
             using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -111,11 +111,11 @@ namespace MonitoringMoney
                     {
                         if (data.ContainsKey(reader.GetString(0)))
                         {
-                            data[reader.GetString(0)].Add(reader.GetString(1));
+                            data[reader.GetString(0)].Add(double.Parse(reader.GetString(1).Replace("$","").Replace("сум", "")));
                         }
                         else
                         {
-                            data.Add(reader.GetString(0), new List<object>() { reader.GetString(1) });
+                            data.Add(reader.GetString(0), new List<double>() { double.Parse(reader.GetString(1).Replace("сум", "").Replace("$", "")) });
                         }
                     }
                 }

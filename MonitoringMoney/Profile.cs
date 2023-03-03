@@ -1,5 +1,6 @@
 ﻿using Bunifu.Charts.WinForms;
 using Bunifu.Dataviz.WinForms;
+using IronPython.Runtime.Operations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -93,20 +94,13 @@ namespace MonitoringMoney
             {
                 barChart.Series["Users"].Points.AddXY(all_data);
             }
-
-
         }
         
         private void FilerData()
         {
             var all_data = db_api.Get_Name_And_Amount();
-            var double_list = new List<double>();
-            var filteredData = new Dictionary<string, List<double>>();
 
-            for (int i = 0; i < all_data.Values.Count; i++)
-            {
-                MessageBox.Show(all_data[i].ToString());
-            }
+            
 
         }
 

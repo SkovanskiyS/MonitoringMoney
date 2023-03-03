@@ -1396,7 +1396,7 @@
             this.barChart.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             this.barChart.Legends.Add(legend2);
-            this.barChart.Location = new System.Drawing.Point(57, 147);
+            this.barChart.Location = new System.Drawing.Point(51, 147);
             this.barChart.Name = "barChart";
             this.barChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
             series2.ChartArea = "ChartArea1";
