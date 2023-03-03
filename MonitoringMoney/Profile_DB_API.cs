@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+using System.IO;
 namespace MonitoringMoney
 {
     internal class Profile_DB_API
@@ -43,7 +45,7 @@ namespace MonitoringMoney
 
         public int WholeSpends()
         {
-            string query = "select `Amount`` from debtordb";
+            string query = "select `Amount` from debtordb";
             connection.Open();
             var all_amount = new List<object>();
             int sum_all_elems = 0;
@@ -67,8 +69,21 @@ namespace MonitoringMoney
             }
 
             connection.Close();
-            return 0;
+            GetCurrency();
+            return 1;
         }
 
+
+
+        private void GetCurrency()
+        {
+            ScriptEngine engine = Python.CreateEngine();
+            //current path
+            string python_path = (Directory.GetParent( Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName)+ @"\parsing\main.py";
+
+           // MessageBox.Show(python_path);
+            
+            engine.ExecuteFile(python_path);
+        }
     }
 }
