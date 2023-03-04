@@ -35,7 +35,7 @@ namespace MonitoringMoney
             connection.Open();
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@exchange", "Дал (занял)");
+                command.Parameters.AddWithValue("@exchange", "Взял (одолжил)");
 
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
@@ -97,18 +97,31 @@ namespace MonitoringMoney
         public Dictionary<object, int> Get_Name_And_Amount()
         {
             GetCurrency();
-            string query = "select `Client`,`Amount` from debtordb";
+            string query = "select `Client`,`Amount` from debtordb where Exchange=@exchange";
             Dictionary<object, int> data = new Dictionary<object, int>();
-
-            connection.Open();
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+            }
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
+                command.Parameters.AddWithValue("@exchange", "Взял (одолжил)");
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         int i = int.Parse(reader.GetString(1).Replace(",","").Replace("сум", "").Replace("$",""));
-                        int last_dollar = reader.GetString(1).Contains("сум")? i / currency : int.Parse(reader.GetString(1).Replace("$", ""));
+                        //int last_dollar = reader.GetString(1).Contains("сум")? i / currency : int.Parse(reader.GetString(1).Replace("$", "").Replace("сум",""));
+                        int last_dollar = 0;
+                        if (reader.GetString(1).Contains("сум"))
+                        {
+                            last_dollar = i / currency;
+                        }
+                        else
+                        {
+                            last_dollar = i;
+                        }
+                        
                         if (data.ContainsKey(reader.GetString(0).ToLower()))
                             data[reader.GetString(0).ToLower()] += last_dollar;
                         else
@@ -116,6 +129,7 @@ namespace MonitoringMoney
                     }
                 }
             }
+            connection.Close();
             return data;
         }
 

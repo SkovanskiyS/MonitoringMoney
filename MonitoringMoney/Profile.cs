@@ -19,7 +19,7 @@ namespace MonitoringMoney
     public partial class Profile : Form
     {
         Profile_DB_API db_api;
-        private Dictionary<object,int> most,middle,lowest;
+        private Dictionary<object,int> most,lowest;
 
         public Profile()
         {
@@ -31,6 +31,7 @@ namespace MonitoringMoney
             spendGridView.DataSource = db_api.Spends();
             ChangeColumn();
             FilerData();
+            Render_BarChart();
         }
 
         private void bunifuLabel4_Click(object sender, EventArgs e)
@@ -71,7 +72,7 @@ namespace MonitoringMoney
                     int Y = dataPanel.Location.Y;
                     int btnY = showUserBtn.Location.Y;
                     dataPanel.Location = new Point(0, Y+=1);
-                    showUserBtn.Location = new Point(0, btnY += 1);
+                    showUserBtn.Location = new Point(4, btnY += 1);
                 }
 
             }
@@ -83,7 +84,7 @@ namespace MonitoringMoney
                     int Y = dataPanel.Location.Y;
                     int btnY = showUserBtn.Location.Y;
                     dataPanel.Location = new Point(0, Y -= 1);
-                    showUserBtn.Location = new Point(0, btnY -= 1);
+                    showUserBtn.Location = new Point(4, btnY -= 1);
                 }
                 showUserBtn.Text = "Скрыть всех";
             }
@@ -91,48 +92,69 @@ namespace MonitoringMoney
 
         private void Render_BarChart()
         {
-            var all_data = db_api.Get_Name_And_Amount();
-           
-            for (int i = 0; i < all_data.Count; i++)
+            FilerData();
+            //var all_data = db_api.Get_Name_And_Amount();
+            int i = 0;
+            foreach (var item in most)
             {
-                barChart.Series["Users"].Points.AddXY(all_data);
+                columnChart.Series["Users"].Points.AddXY(item.Key, item.Value);
+                columnChart.Series["Users"].Points[i].Label = item.Value.ToString();
+                i++;
             }
+            int a = 0;
+            foreach (var item in lowest)
+            {
+                barChart.Series["Users"].Points.AddXY(item.Key, item.Value);
+                barChart.Series["Users"].Points[a].Label = item.Value.ToString();
+                a++;
+            }
+
         }
         
         private void FilerData()
         {
             var all_data = db_api.Get_Name_And_Amount();
             most = new Dictionary<object, int>();
-            middle = new Dictionary<object, int>();
             lowest = new Dictionary<object, int>();
             //var sortedDict = from entry in all_data orderby entry.Value descending select entry;
             var sortedDict = all_data.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
-            for (int i = 0; i < all_data.Count; i++)
+
+            int counts = sortedDict.Count <= 10? sortedDict.Count: counts = 15;
+
+            for (int i=0 ; i < counts; i++)
             {
                 var keyValuePair = sortedDict.ElementAt(i);
-                if (i <= sortedDict.Count / 3)
+                if (i < 5)
                 {
                     most.Add(keyValuePair.Key, keyValuePair.Value);
                 }
-                else if (i > sortedDict.Count / 3 && i <= (sortedDict.Count / 3) * 2)
-                {
-                    middle.Add(keyValuePair.Key, keyValuePair.Value);
-                }
                 else
                 {
-                    lowest.Add(keyValuePair.Key,keyValuePair.Value);
+                    lowest.Add(keyValuePair.Key, keyValuePair.Value);
                 }
             }
 
+        }
 
-            MessageBox.Show("");
+        private void bunifuLabel4_Click_1(object sender, EventArgs e)
+        {
 
+        }
+
+        private void updateBtn_Click(object sender, EventArgs e)
+        {
+            Render_BarChart();
         }
 
         private void bunifuButton22_Click(object sender, EventArgs e)
         {
             main_menu.SetPage(1);
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void bunifuButton21_Click(object sender, EventArgs e)

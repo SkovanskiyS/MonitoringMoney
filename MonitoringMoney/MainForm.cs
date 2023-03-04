@@ -15,6 +15,7 @@ namespace MonitoringMoney
         MySqlCommand cmd;
         BindingSource bindingSource;
         DB_API dataBase;
+        private bool isWindowOpened;
         public MainForm()
         {
             InitializeComponent();
@@ -98,7 +99,9 @@ namespace MonitoringMoney
                 changeText();
             }
             catch (Exception)
-            {}
+            {
+                changeText();
+            }
         }
 
         public void ChangeColumnName()
@@ -202,6 +205,7 @@ namespace MonitoringMoney
 
         private void addBtn_Click(object sender, EventArgs e)
         {
+            changeText();
             dataBase = new DB_API();
             dataBase.Insert(dateOfReg.Value.Date, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text, wellText.Enabled);
             allDataGridView.DataSource = dataBase.LoadAllData();
@@ -219,8 +223,13 @@ namespace MonitoringMoney
 
         private void мойПрофильToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Profile profile = new Profile();
-            profile.Show();
+            if (!isWindowOpened)
+            {
+                Profile profile = new Profile();
+                profile.Show();
+                isWindowOpened = true;
+            }
+            isWindowOpened = false;
         }
 
         private void allDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
