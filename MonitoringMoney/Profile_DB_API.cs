@@ -75,8 +75,6 @@ namespace MonitoringMoney
             return GetCurrency();
         }
 
-
-
         private double GetCurrency()
         {
             try
@@ -93,9 +91,7 @@ namespace MonitoringMoney
                 MessageBox.Show(e.Message);
             }
             return 0;
-
         }
-
 
         public Dictionary<object, List<double>> Get_Name_And_Amount()
         {
@@ -112,6 +108,8 @@ namespace MonitoringMoney
                         if (data.ContainsKey(reader.GetString(0)))
                         {
                             data[reader.GetString(0)].Add(double.Parse(reader.GetString(1).Replace("$","").Replace("сум", "")));
+
+
                         }
                         else
                         {
