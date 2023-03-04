@@ -20,7 +20,7 @@ namespace MonitoringMoney
     {
 
         private string connection_text = @"server=localhost;port=3306;username=root;password=root;database=debtorddatabase";
-
+        private int currency;
         MySqlConnection connection;
         DataTable table;
         public Profile_DB_API()
@@ -48,7 +48,7 @@ namespace MonitoringMoney
         }
 
 
-        public object WholeSpends()
+        public void WholeSpends()
         {
             string query = "select `Amount` from debtordb";
             connection.Open();
@@ -73,10 +73,10 @@ namespace MonitoringMoney
                // MessageBox.Show(all_amount[i].ToString());
             }
             connection.Close();
-            return GetCurrency();
+
         }
 
-        private double GetCurrency()
+        private void GetCurrency()
         {
             try
             {
@@ -84,18 +84,19 @@ namespace MonitoringMoney
                 var uri = new Uri("https://bank.uz/currency");
                 var doc = Supremes.Dcsoup.Parse(uri, timeoutInMilliseconds);
                 var ratingSpan = doc.Select("span[class=medium-text]");
-                double currency = double.Parse(ratingSpan.Text.Substring(23, 9).Replace(".", ","));
-                return currency;
+                double d_currency = double.Parse(ratingSpan.Text.Substring(23, 9).Replace(".", ","));
+                currency = Convert.ToInt32(d_currency);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
-            return 0;
+            
         }
 
         public Dictionary<object, int> Get_Name_And_Amount()
         {
+            GetCurrency();
             string query = "select `Client`,`Amount` from debtordb";
             Dictionary<object, int> data = new Dictionary<object, int>();
 
@@ -107,7 +108,7 @@ namespace MonitoringMoney
                     while (reader.Read())
                     {
                         int i = int.Parse(reader.GetString(1).Replace(",","").Replace("сум", "").Replace("$",""));
-                        int last_dollar = reader.GetString(1).Contains("сум")? i / 11380: int.Parse(reader.GetString(1).Replace("$", ""));
+                        int last_dollar = reader.GetString(1).Contains("сум")? i / currency : int.Parse(reader.GetString(1).Replace("$", ""));
                         if (data.ContainsKey(reader.GetString(0).ToLower()))
                             data[reader.GetString(0).ToLower()] += last_dollar;
                         else

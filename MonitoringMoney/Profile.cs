@@ -2,6 +2,7 @@
 using Bunifu.Dataviz.WinForms;
 using IronPython.Runtime.Operations;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,12 +12,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using static IronPython.Modules._ast;
 
 namespace MonitoringMoney
 {
     public partial class Profile : Form
     {
         Profile_DB_API db_api;
+        private Dictionary<object,int> most,middle,lowest;
+
         public Profile()
         {
             InitializeComponent();
@@ -98,6 +102,29 @@ namespace MonitoringMoney
         private void FilerData()
         {
             var all_data = db_api.Get_Name_And_Amount();
+            most = new Dictionary<object, int>();
+            middle = new Dictionary<object, int>();
+            lowest = new Dictionary<object, int>();
+            //var sortedDict = from entry in all_data orderby entry.Value descending select entry;
+            var sortedDict = all_data.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+            for (int i = 0; i < all_data.Count; i++)
+            {
+                var keyValuePair = sortedDict.ElementAt(i);
+                if (i <= sortedDict.Count / 3)
+                {
+                    most.Add(keyValuePair.Key, keyValuePair.Value);
+                }
+                else if (i > sortedDict.Count / 3 && i <= (sortedDict.Count / 3) * 2)
+                {
+                    middle.Add(keyValuePair.Key, keyValuePair.Value);
+                }
+                else
+                {
+                    lowest.Add(keyValuePair.Key,keyValuePair.Value);
+                }
+            }
+
 
             MessageBox.Show("");
 
