@@ -12,6 +12,7 @@ using System.IO;
 using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json.Linq;
 using static IronPython.Modules._ast;
+using System.Globalization;
 
 namespace MonitoringMoney
 {
@@ -93,10 +94,10 @@ namespace MonitoringMoney
             return 0;
         }
 
-        public Dictionary<object, List<double>> Get_Name_And_Amount()
+        public Dictionary<object, int> Get_Name_And_Amount()
         {
             string query = "select `Client`,`Amount` from debtordb";
-            Dictionary<object, List<double>> data = new Dictionary<object, List<double>>();
+            Dictionary<object, int> data = new Dictionary<object, int>();
 
             connection.Open();
             using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -105,16 +106,22 @@ namespace MonitoringMoney
                 {
                     while (reader.Read())
                     {
-                        if (data.ContainsKey(reader.GetString(0)))
-                        {
-                            data[reader.GetString(0)].Add(double.Parse(reader.GetString(1).Replace("$","").Replace("сум", "")));
+                        //int last_dollar = reader.GetString(1).Contains("сум") ? int.Parse(reader.GetString(1).Replace("сум", "")) / 11380 : int.Parse(reader.GetString(1).Replace("$", ""));
+                        //if (data.ContainsKey(reader.GetString(0))) data[reader.GetString(0)] += last_dollar;
+                        //else data.Add(reader.GetString(0), last_dollar);
 
 
-                        }
+                        double double_value = double.Parse(reader.GetString(1).Replace("сум", "").Replace("$",""));
+                        int integer_value = Convert.ToInt32(double_value * 1000, CultureInfo.InvariantCulture);
+
+                        int last_dollar = reader.GetString(1).Contains("сум") ? integer_value / 11380 : int.Parse(reader.GetString(0).Replace("$", ""));
+
+                        if 
+                            (data.ContainsKey(reader.GetString(0))) data[reader.GetString(0)] += last_dollar;
                         else
-                        {
-                            data.Add(reader.GetString(0), new List<double>() { double.Parse(reader.GetString(1).Replace("сум", "").Replace("$", "")) });
-                        }
+                            data.Add(reader.GetString(0), last_dollar);
+
+
                     }
                 }
             }

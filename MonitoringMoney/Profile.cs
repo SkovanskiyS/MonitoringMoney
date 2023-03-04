@@ -25,7 +25,6 @@ namespace MonitoringMoney
         private void Profile_Load(object sender, EventArgs e)
         {
             spendGridView.DataSource = db_api.Spends();
-            MessageBox.Show(db_api.WholeSpends().ToString());
             ChangeColumn();
             FilerData();
         }
@@ -100,10 +99,18 @@ namespace MonitoringMoney
         {
             var all_data = db_api.Get_Name_And_Amount();
 
-            
+            MessageBox.Show("");
 
         }
 
+        private void bunifuButton22_Click(object sender, EventArgs e)
+        {
+            main_menu.SetPage(1);
+        }
 
+        private void bunifuButton21_Click(object sender, EventArgs e)
+        {
+            main_menu.SetPage(0);
+        }
     }
 }
