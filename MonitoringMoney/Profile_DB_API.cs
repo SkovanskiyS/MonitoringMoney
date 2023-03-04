@@ -106,22 +106,12 @@ namespace MonitoringMoney
                 {
                     while (reader.Read())
                     {
-                        //int last_dollar = reader.GetString(1).Contains("сум") ? int.Parse(reader.GetString(1).Replace("сум", "")) / 11380 : int.Parse(reader.GetString(1).Replace("$", ""));
-                        //if (data.ContainsKey(reader.GetString(0))) data[reader.GetString(0)] += last_dollar;
-                        //else data.Add(reader.GetString(0), last_dollar);
-
-
-                        double double_value = double.Parse(reader.GetString(1).Replace("сум", "").Replace("$",""));
-                        int integer_value = Convert.ToInt32(double_value * 1000, CultureInfo.InvariantCulture);
-
-                        int last_dollar = reader.GetString(1).Contains("сум") ? integer_value / 11380 : int.Parse(reader.GetString(0).Replace("$", ""));
-
-                        if 
-                            (data.ContainsKey(reader.GetString(0))) data[reader.GetString(0)] += last_dollar;
+                        int i = int.Parse(reader.GetString(1).Replace(",","").Replace("сум", "").Replace("$",""));
+                        int last_dollar = reader.GetString(1).Contains("сум")? i / 11380: int.Parse(reader.GetString(1).Replace("$", ""));
+                        if (data.ContainsKey(reader.GetString(0).ToLower()))
+                            data[reader.GetString(0).ToLower()] += last_dollar;
                         else
-                            data.Add(reader.GetString(0), last_dollar);
-
-
+                            data.Add(reader.GetString(0).ToLower(), last_dollar);
                     }
                 }
             }
