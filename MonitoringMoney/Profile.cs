@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,11 @@ namespace MonitoringMoney
             ChangeColumn();
             FilerData();
             Render_BarChart();
+
+            int spends = Get_All_Spends();
+
+            label_all_spends.Text = "-"+spends.ToString()+"$ | "+$"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
+
         }
 
         private void bunifuLabel4_Click(object sender, EventArgs e)
@@ -137,14 +143,15 @@ namespace MonitoringMoney
 
         }
 
-        private void bunifuLabel4_Click_1(object sender, EventArgs e)
+        private int Get_All_Spends()
         {
-
-        }
-
-        private void updateBtn_Click(object sender, EventArgs e)
-        {
-            Render_BarChart();
+            int amount = 0;
+            var all_data = db_api.Get_Name_And_Amount();
+            foreach (var item in all_data.Values)
+            {
+                amount += item;
+            }
+            return amount;
         }
 
         private void bunifuButton22_Click(object sender, EventArgs e)
@@ -152,9 +159,9 @@ namespace MonitoringMoney
             main_menu.SetPage(1);
         }
 
-        private void tabPage1_Click(object sender, EventArgs e)
+        private void label_all_spends_Click(object sender, EventArgs e)
         {
-
+            Clipboard.SetText(label_all_spends.Text);
         }
 
         private void bunifuButton21_Click(object sender, EventArgs e)

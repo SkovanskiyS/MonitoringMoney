@@ -20,7 +20,7 @@ namespace MonitoringMoney
     {
 
         private string connection_text = @"server=localhost;port=3306;username=root;password=root;database=debtorddatabase";
-        private int currency;
+        public int currency;
         MySqlConnection connection;
         DataTable table;
         public Profile_DB_API()
@@ -53,7 +53,6 @@ namespace MonitoringMoney
             string query = "select `Amount` from debtordb";
             connection.Open();
             var all_amount = new List<object>();
-            int sum_all_elems = 0;
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
                 using (MySqlDataReader reader = command.ExecuteReader())
@@ -67,16 +66,11 @@ namespace MonitoringMoney
                     }
                 }
             }
-
-            for (int i = 0; i < all_amount.Count; i++)
-            {
-               // MessageBox.Show(all_amount[i].ToString());
-            }
             connection.Close();
 
         }
 
-        private void GetCurrency()
+        public void GetCurrency()
         {
             try
             {
