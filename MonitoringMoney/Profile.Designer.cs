@@ -896,10 +896,10 @@
             this.main_menu.Margin = new System.Windows.Forms.Padding(2);
             this.main_menu.Multiline = true;
             this.main_menu.Name = "main_menu";
-            this.main_menu.Page = this.tabPage2;
-            this.main_menu.PageIndex = 1;
-            this.main_menu.PageName = "tabPage2";
-            this.main_menu.PageTitle = "tabPage2";
+            this.main_menu.Page = this.tabPage3;
+            this.main_menu.PageIndex = 2;
+            this.main_menu.PageName = "tabPage3";
+            this.main_menu.PageTitle = "tabPage3";
             this.main_menu.SelectedIndex = 0;
             this.main_menu.Size = new System.Drawing.Size(1134, 718);
             this.main_menu.TabIndex = 1;
@@ -2010,6 +2010,7 @@
             this.bunifuButton23.TextMarginLeft = 0;
             this.bunifuButton23.TextPadding = new System.Windows.Forms.Padding(0);
             this.bunifuButton23.UseDefaultRadiusAndThickness = true;
+            this.bunifuButton23.Click += new System.EventHandler(this.bunifuButton23_Click);
             // 
             // bunifuPanel2
             // 

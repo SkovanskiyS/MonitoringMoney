@@ -322,6 +322,11 @@ namespace MonitoringMoney
 
         }
 
+        private void bunifuButton23_Click(object sender, EventArgs e)
+        {
+            main_menu.SetPage(2);
+        }
+
         private void bunifuButton21_Click(object sender, EventArgs e)
         {
             main_menu.SetPage(0);
