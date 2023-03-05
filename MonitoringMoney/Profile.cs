@@ -145,7 +145,7 @@ namespace MonitoringMoney
             var sortedDict = all_data.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
 
-            int counts = sortedDict.Count <= 10? sortedDict.Count: counts = 15;
+            int counts = sortedDict.Count <= 10? sortedDict.Count: counts = 12;
 
             for (int i=0 ; i < counts; i++)
             {
@@ -223,6 +223,11 @@ namespace MonitoringMoney
         private void tabPage2_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void bunifuButton21_Click(object sender, EventArgs e)

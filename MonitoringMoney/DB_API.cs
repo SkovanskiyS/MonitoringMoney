@@ -65,7 +65,7 @@ namespace MonitoringMoney
 
         public DataTable LoadAllData()
         {
-            connection.Open();
+            if(connection.State == ConnectionState.Closed) { connection.Open(); }
             cmd = connection.CreateCommand();
             cmd.CommandText = "SELECT * FROM `debtordb`";
             MySqlDataReader reader = cmd.ExecuteReader();

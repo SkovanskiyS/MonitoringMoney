@@ -236,6 +236,12 @@ namespace MonitoringMoney
         {
 
         }
+
+        private void bunifuIconButton1_Click(object sender, EventArgs e)
+        {
+            searchTextBox.Text = "";
+            allDataGridView.DataSource = dataBase.LoadAllData();
+        }
     }
 }
 

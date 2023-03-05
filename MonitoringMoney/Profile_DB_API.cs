@@ -74,7 +74,7 @@ namespace MonitoringMoney
         {
             try
             {
-                var timeoutInMilliseconds = 2000;
+                var timeoutInMilliseconds = 5000;
                 var uri = new Uri("https://bank.uz/currency");
                 var doc = Supremes.Dcsoup.Parse(uri, timeoutInMilliseconds);
                 var ratingSpan = doc.Select("span[class=medium-text]");
@@ -83,6 +83,7 @@ namespace MonitoringMoney
             }
             catch (Exception e)
             {
+                currency = 0;
                 MessageBox.Show(e.Message);
             }
             
@@ -90,7 +91,8 @@ namespace MonitoringMoney
 
         public Dictionary<object, int> Get_Name_And_Amount(string get_or_give)
         {
-            GetCurrency();
+            if (currency == 0) GetCurrency();
+
             string query = "select `Client`,`Amount` from debtordb where Exchange=@exchange";
             Dictionary<object, int> data = new Dictionary<object, int>();
             if (connection.State == ConnectionState.Closed)
