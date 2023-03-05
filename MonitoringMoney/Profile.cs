@@ -36,7 +36,7 @@ namespace MonitoringMoney
 
             int spends = Get_All_Spends();
 
-            label_all_spends.Text = "-"+spends.ToString()+"$ | "+$"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
+            label_all_spends.Text = "-"+spends.ToString()+"$ | -"+$"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
 
         }
 
@@ -162,6 +162,7 @@ namespace MonitoringMoney
         private void label_all_spends_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(label_all_spends.Text);
+            bunifuSnackbar1.Show(this, "Скопирован 👍");
         }
 
         private void bunifuButton21_Click(object sender, EventArgs e)
