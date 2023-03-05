@@ -74,7 +74,7 @@ namespace MonitoringMoney
         {
             try
             {
-                var timeoutInMilliseconds = 5000;
+                var timeoutInMilliseconds = 2000;
                 var uri = new Uri("https://bank.uz/currency");
                 var doc = Supremes.Dcsoup.Parse(uri, timeoutInMilliseconds);
                 var ratingSpan = doc.Select("span[class=medium-text]");
@@ -88,7 +88,7 @@ namespace MonitoringMoney
             
         }
 
-        public Dictionary<object, int> Get_Name_And_Amount()
+        public Dictionary<object, int> Get_Name_And_Amount(string get_or_give)
         {
             GetCurrency();
             string query = "select `Client`,`Amount` from debtordb where Exchange=@exchange";
@@ -99,7 +99,7 @@ namespace MonitoringMoney
             }
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@exchange", "Взял (одолжил)");
+                command.Parameters.AddWithValue("@exchange", get_or_give);
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -126,6 +126,25 @@ namespace MonitoringMoney
             connection.Close();
             return data;
         }
+
+        public DataTable GetIncome()
+        {
+            string query = "select * from debtordb where Exchange=@exchange";
+            connection.Open();
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@exchange", "Дал (занял)");
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    table.Load(reader);
+                }
+            }
+
+            connection.Close();
+            return table;
+        }
+
 
 
     }
