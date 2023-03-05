@@ -29,13 +29,14 @@ namespace MonitoringMoney
             table = new DataTable();
         }
 
-        public DataTable Spends()
+        public DataTable Spends_Income(string pathway)
         {
+            table = new DataTable();
             string query = "select * from debtordb where Exchange=@exchange";
             connection.Open();
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@exchange", "Взял (одолжил)");
+                command.Parameters.AddWithValue("@exchange", pathway);
 
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
@@ -128,26 +129,6 @@ namespace MonitoringMoney
             connection.Close();
             return data;
         }
-
-        public DataTable GetIncome()
-        {
-            string query = "select * from debtordb where Exchange=@exchange";
-            connection.Open();
-            using (MySqlCommand command = new MySqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@exchange", "Дал (занял)");
-
-                using (MySqlDataReader reader = command.ExecuteReader())
-                {
-                    table.Load(reader);
-                }
-            }
-
-            connection.Close();
-            return table;
-        }
-
-
 
     }
 }

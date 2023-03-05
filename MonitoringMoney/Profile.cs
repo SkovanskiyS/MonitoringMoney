@@ -30,15 +30,15 @@ namespace MonitoringMoney
         }
         private void Profile_Load(object sender, EventArgs e)
         {
-            spendGridView.DataSource = db_api.Spends();
-            ChangeColumn(spendGridView);
             FilerData("Взял (одолжил)");
             Render_BarChart();
             Render_SecondPage_Charts();
             int spends = Get_All_Spends();
-
             label_all_spends.Text = "-"+spends.ToString()+"$ | -"+$"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
-
+            spendGridView.DataSource = db_api.Spends_Income("Взял (одолжил)");
+            incomeGridView.DataSource = db_api.Spends_Income("Дал (занял)");
+            ChangeColumn(spendGridView);
+            ChangeColumn(incomeGridView);
         }
 
         private void bunifuLabel4_Click(object sender, EventArgs e)
@@ -55,7 +55,7 @@ namespace MonitoringMoney
         {
             string[] columnNames = { "ID", "Дата", "Клиент", "Обмен", "Валюта", "Сумма", "Курс", "Транзакция", "Описание" };
 
-            for (int i = 0; i < spendGridView.Columns.Count; i++)
+            for (int i = 0; i < dataGridView.Columns.Count; i++)
             {
                 dataGridView.Columns[i].HeaderText = columnNames[i];
             }
@@ -68,16 +68,18 @@ namespace MonitoringMoney
 
         private void showUserBtn_Click(object sender, EventArgs e)
         {
-
+            int Y = 0;
+            int btnY = 0;
             if (showUserBtn.Text == "Скрыть всех")
             {
               //  spendGridView.Visible = false;
                 showUserBtn.Text = "Показать всех";
+    
                 //663
-                while (dataPanel.Location.Y!=682)
+                while (dataPanel.Location.Y != 680)
                 {
-                    int Y = dataPanel.Location.Y;
-                    int btnY = showUserBtn.Location.Y;
+                    Y = dataPanel.Location.Y;
+                    btnY = showUserBtn.Location.Y;
                     dataPanel.Location = new Point(0, Y+=1);
                     showUserBtn.Location = new Point(4, btnY += 1);
                 }
@@ -87,8 +89,8 @@ namespace MonitoringMoney
                 //  spendGridView.Visible = true;
                 while (dataPanel.Location.Y != 511)
                 {
-                    int Y = dataPanel.Location.Y;
-                    int btnY = showUserBtn.Location.Y;
+                    Y = dataPanel.Location.Y;
+                    btnY = showUserBtn.Location.Y;
                     dataPanel.Location = new Point(0, Y -= 1);
                     showUserBtn.Location = new Point(4, btnY -= 1);
                 }
@@ -177,7 +179,6 @@ namespace MonitoringMoney
         {
             //load next page
             main_menu.SetPage(1);
-            incomeGridView.DataSource = db_api.GetIncome();
             ChangeColumn(incomeGridView);
 
 
@@ -192,16 +193,17 @@ namespace MonitoringMoney
 
         private void bunifuButton1_Click(object sender, EventArgs e)
         {
-
+            int Y = 0;
+            int btnY = 0;
             if (show_hide_btnp2.Text == "Скрыть всех")
             {
                 //  spendGridView.Visible = false;
                 show_hide_btnp2.Text = "Показать всех";
                 //663
-                while (income_data_panel.Location.Y != 682)
+                while (income_data_panel.Location.Y != 680)
                 {
-                    int Y = income_data_panel.Location.Y;
-                    int btnY = show_hide_btnp2.Location.Y;
+                    Y = income_data_panel.Location.Y;
+                    btnY = show_hide_btnp2.Location.Y;
                     income_data_panel.Location = new Point(0, Y += 1);
                     show_hide_btnp2.Location = new Point(4, btnY += 1);
                 }
@@ -211,8 +213,8 @@ namespace MonitoringMoney
                 //  spendGridView.Visible = true;
                 while (income_data_panel.Location.Y != 511)
                 {
-                    int Y = income_data_panel.Location.Y;
-                    int btnY = show_hide_btnp2.Location.Y;
+                    Y = income_data_panel.Location.Y;
+                    btnY = show_hide_btnp2.Location.Y;
                     income_data_panel.Location = new Point(0, Y -= 1);
                     show_hide_btnp2.Location = new Point(4, btnY -= 1);
                 }
