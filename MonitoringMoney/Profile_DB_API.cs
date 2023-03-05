@@ -130,5 +130,46 @@ namespace MonitoringMoney
             return data;
         }
 
+        public Dictionary<object, int> Get_Data_By_DateTime(DateTime from,DateTime to,string get_or_give)
+        {
+            string query = "select `Client`,`Amount` from debtordb where Date between @from and @to and Exchange=@exchange";
+            Dictionary<object, int> data = new Dictionary<object, int>();
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@from", from.ToString("yyyy-MM-dd"));
+                command.Parameters.AddWithValue("@to", to.ToString("yyyy-MM-dd"));
+                command.Parameters.AddWithValue("@exchange", get_or_give);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int i = int.Parse(reader.GetString(1).Replace(",", "").Replace("сум", "").Replace("$", ""));
+                        //int last_dollar = reader.GetString(1).Contains("сум")? i / currency : int.Parse(reader.GetString(1).Replace("$", "").Replace("сум",""));
+                        int last_dollar = 0;
+                        if (reader.GetString(1).Contains("сум"))
+                        {
+                            last_dollar = i / currency;
+                        }
+                        else
+                        {
+                            last_dollar = i;
+                        }
+
+                        if (data.ContainsKey(reader.GetString(0).ToLower()))
+                            data[reader.GetString(0).ToLower()] += last_dollar;
+                        else
+                            data.Add(reader.GetString(0).ToLower(), last_dollar);
+                    }
+                }
+            }
+            connection.Close();
+            return data;
+        }
+
+
     }
 }
