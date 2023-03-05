@@ -15,13 +15,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static IronPython.Modules._ast;
+using static IronPython.Modules.PythonDateTime;
 
 namespace MonitoringMoney
 {
     public partial class Profile : Form
     {
         Profile_DB_API db_api;
-        private Dictionary<object,int> most,lowest;
+        private Dictionary<object, int> most, lowest;
         private bool filter_ON;
 
         public Profile()
@@ -34,7 +35,7 @@ namespace MonitoringMoney
             FilerData("Взял (одолжил)");
             Render_BarChart();
             Render_SecondPage_Charts();
-            Change_Text_All_Time("Взял (одолжил)",label_all_spends,"-");
+            Change_Text_All_Time("Взял (одолжил)", label_all_spends, "-");
             spendGridView.DataSource = db_api.Spends_Income("Взял (одолжил)");
             incomeGridView.DataSource = db_api.Spends_Income("Дал (занял)");
             ChangeColumn(spendGridView);
@@ -45,9 +46,7 @@ namespace MonitoringMoney
         {
             // Set the Format type and the CustomFormat string.
 
-            filer_DatePicker.Format = DateTimePickerFormat.Custom;
-            filer_DatePicker.CustomFormat = "MMMM yyyy";
-            filer_DatePicker.ShowUpDown = true;
+
         }
 
         private void ChangeColumn(DataGridView dataGridView)
@@ -66,15 +65,15 @@ namespace MonitoringMoney
             int btnY = 0;
             if (showUserBtn.Text == "Скрыть всех")
             {
-              //  spendGridView.Visible = false;
+                //  spendGridView.Visible = false;
                 showUserBtn.Text = "Показать всех";
-    
+
                 //663
                 while (dataPanel.Location.Y != 680)
                 {
                     Y = dataPanel.Location.Y;
                     btnY = showUserBtn.Location.Y;
-                    dataPanel.Location = new Point(0, Y+=1);
+                    dataPanel.Location = new Point(0, Y += 1);
                     showUserBtn.Location = new Point(4, btnY += 1);
                 }
             }
@@ -98,7 +97,7 @@ namespace MonitoringMoney
 
 
             Series series = columnChart.Series.FindByName("Users");
-            if (series!=null)
+            if (series != null)
             {
                 columnChart.Series["Users"].Points.Clear();
                 barChart.Series["Users"].Points.Clear();
@@ -121,7 +120,7 @@ namespace MonitoringMoney
             }
 
         }
-        
+
         private void Render_SecondPage_Charts()
         {
             FilerData("Дал (занял)");
@@ -151,11 +150,17 @@ namespace MonitoringMoney
 
         private void FilerData(string data_to_get)
         {
-            Dictionary<object, int> all_data; 
+            Dictionary<object, int> all_data = new Dictionary<object, int>();
 
 
             if (filter_ON)
-                all_data = db_api.Get_Data_By_DateTime(dateFrom.Value.Date, dateTo.Value.Date, data_to_get);
+            {
+                if (data_to_get == "Взял (одолжил)")
+                    all_data = db_api.Get_Data_By_DateTime(dateFrom.Value.Date, dateTo.Value.Date, data_to_get);
+
+                else if(data_to_get == "Дал (занял)")
+                    all_data = db_api.Get_Data_By_DateTime(from_date_picker_p2.Value.Date, to_date_picker_p2.Value.Date, data_to_get);
+            }
             else all_data = db_api.Get_Name_And_Amount(data_to_get);
 
 
@@ -165,9 +170,9 @@ namespace MonitoringMoney
             var sortedDict = all_data.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
 
-            int counts = sortedDict.Count <= 10? sortedDict.Count: counts = 12;
+            int counts = sortedDict.Count <= 10 ? sortedDict.Count : counts = 12;
 
-            for (int i=0 ; i < counts; i++)
+            for (int i = 0; i < counts; i++)
             {
                 var keyValuePair = sortedDict.ElementAt(i);
                 if (i < 5)
@@ -185,11 +190,19 @@ namespace MonitoringMoney
         private int Get_All_Spends(string data_to_get)
         {
             int amount = 0;
-            Dictionary<object, int> all_data; 
+            Dictionary<object, int> all_data = new Dictionary<object, int>();
 
             if (filter_ON)
-                all_data = db_api.Get_Data_By_DateTime(dateFrom.Value.Date, dateTo.Value.Date, data_to_get);
+            {
+                if (data_to_get == "Взял (одолжил)")
+                    all_data = db_api.Get_Data_By_DateTime(dateFrom.Value.Date, dateTo.Value.Date, data_to_get);
+
+                else if (data_to_get == "Дал (занял)")
+                    all_data = db_api.Get_Data_By_DateTime(from_date_picker_p2.Value.Date, to_date_picker_p2.Value.Date, data_to_get);
+            }
             else all_data = db_api.Get_Name_And_Amount(data_to_get);
+
+
 
             foreach (var item in all_data.Values)
             {
@@ -203,7 +216,7 @@ namespace MonitoringMoney
             //load next page
             main_menu.SetPage(1);
             ChangeColumn(incomeGridView);
-            Change_Text_All_Time("Дал (занял)", whole_sum,"+");
+            Change_Text_All_Time("Дал (занял)", whole_sum, "+");
         }
 
         private void label_all_spends_Click(object sender, EventArgs e)
@@ -245,11 +258,15 @@ namespace MonitoringMoney
 
         private void applyBtn2_Click(object sender, EventArgs e)
         {
-            if(filter_ON) { filter_ON = false; }
+            if (filter_ON) { filter_ON = false; }
             filter_ON = true;
             int spends = Get_All_Spends("Взял (одолжил)");
-            whole_sum.Text = "-" + (spends).ToString("#,#", CultureInfo.InvariantCulture) + "$ | -" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
-            bunifuLabel2.Text = $"Ваш общий расход за {filer_DatePicker.Value.ToShortDateString()} состовляет: ";
+            if (spends == 0) label_all_spends.Text = "0";
+            else
+            {
+                label_all_spends.Text = "-" + (spends).ToString("#,#", CultureInfo.InvariantCulture) + "$ | -" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
+                bunifuLabel2.Text = $"Ваш общий расход состовляет: ";
+            }
             Render_BarChart();
         }
 
@@ -257,14 +274,21 @@ namespace MonitoringMoney
         {
             filter_ON = false;
             bunifuLabel2.Text = "Ваш общий расход за всё время состовляет: ";
+
             Render_BarChart();
-            Change_Text_All_Time("Взял (одолжил)", label_all_spends,"-");
+            Change_Text_All_Time("Взял (одолжил)", label_all_spends, "-");
+
+            var dateToday = DateTime.Now;
+            dateFrom.Value = DateTime.Parse(dateToday.ToShortDateString());
+            dateTo.Value = DateTime.Parse(dateToday.ToShortDateString());
         }
 
-        private void Change_Text_All_Time(string get_text,BunifuLabel label,string plus_or_minus)
+        private void Change_Text_All_Time(string get_text, BunifuLabel label, string plus_or_minus)
         {
             int spends = Get_All_Spends(get_text);
-            label.Text = plus_or_minus + spends.ToString() + $"$ | {plus_or_minus}" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
+
+            if (spends == 0) label.Text = "0";
+            else label.Text = plus_or_minus + spends.ToString("#,#", CultureInfo.InvariantCulture) + $"$ | {plus_or_minus}" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
         }
 
         private void apply_btn_p2_Click(object sender, EventArgs e)
@@ -272,8 +296,15 @@ namespace MonitoringMoney
             if (filter_ON) { filter_ON = false; }
             filter_ON = true;
             int spends = Get_All_Spends("Дал (занял)");
-            whole_sum.Text = "+" + (spends).ToString("#,#", CultureInfo.InvariantCulture) + "$ | +" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
-            bunifuLabel15.Text = $"Ваш общий долг или прибыль за {filer_DatePicker.Value.ToShortDateString()} состовляет: ";
+
+            if (spends == 0) whole_sum.Text = "0";
+            else
+            {
+
+                whole_sum.Text = "+" + (spends).ToString("#,#", CultureInfo.InvariantCulture) + "$ | +" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
+                bunifuLabel15.Text = $"Ваш общий долг или прибыль состовляет: ";
+            }
+
             Render_SecondPage_Charts();
 
         }
@@ -283,7 +314,12 @@ namespace MonitoringMoney
             filter_ON = false;
             bunifuLabel2.Text = "Ваш общий долг или прибыль за всё время состовляет: ";
             Render_SecondPage_Charts();
-            Change_Text_All_Time("Дал (занял)",whole_sum,"+");
+            Change_Text_All_Time("Дал (занял)", whole_sum, "+");
+
+            var dateToday = DateTime.Now;
+            from_date_picker_p2.Value = DateTime.Parse(dateToday.ToShortDateString());
+            to_date_picker_p2.Value = DateTime.Parse(dateToday.ToShortDateString());
+
         }
 
         private void bunifuButton21_Click(object sender, EventArgs e)
