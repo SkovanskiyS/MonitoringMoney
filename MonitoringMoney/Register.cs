@@ -72,6 +72,9 @@ namespace MonitoringMoney
                     companyName_textbox.Text = "";
                     user_box.Text = "";
                     password_box.Text = "";
+
+                    this.Close();
+
                 }
                 else
                     MessageBox.Show("Заполните все поля!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);

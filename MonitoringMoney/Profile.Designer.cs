@@ -752,7 +752,7 @@
             this.bunifuSeparator4.LineColor = System.Drawing.Color.Silver;
             this.bunifuSeparator4.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.Solid;
             this.bunifuSeparator4.LineThickness = 2;
-            this.bunifuSeparator4.Location = new System.Drawing.Point(707, 76);
+            this.bunifuSeparator4.Location = new System.Drawing.Point(704, 76);
             this.bunifuSeparator4.Margin = new System.Windows.Forms.Padding(4);
             this.bunifuSeparator4.Name = "bunifuSeparator4";
             this.bunifuSeparator4.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Vertical;
@@ -765,9 +765,10 @@
             this.panel1.Controls.Add(this.bunifuSeparator1);
             this.panel1.Controls.Add(this.bunifuLabel3);
             this.panel1.Controls.Add(this.bunifuLabel5);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1098, 83);
+            this.panel1.Size = new System.Drawing.Size(1110, 83);
             this.panel1.TabIndex = 25;
             // 
             // bunifuSeparator1
@@ -896,10 +897,10 @@
             this.main_menu.Margin = new System.Windows.Forms.Padding(2);
             this.main_menu.Multiline = true;
             this.main_menu.Name = "main_menu";
-            this.main_menu.Page = this.tabPage3;
-            this.main_menu.PageIndex = 2;
-            this.main_menu.PageName = "tabPage3";
-            this.main_menu.PageTitle = "tabPage3";
+            this.main_menu.Page = this.tabPage1;
+            this.main_menu.PageIndex = 0;
+            this.main_menu.PageName = "tabPage1";
+            this.main_menu.PageTitle = "tabPage1";
             this.main_menu.SelectedIndex = 0;
             this.main_menu.Size = new System.Drawing.Size(1134, 718);
             this.main_menu.TabIndex = 1;
@@ -2395,7 +2396,7 @@
             this.Controls.Add(this.main_menu);
             this.Controls.Add(this.left_side_panel);
             this.Name = "Profile";
-            this.Text = "Profile";
+            this.Text = "г";
             this.Load += new System.EventHandler(this.Profile_Load);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();

@@ -46,6 +46,8 @@
             this.bunifuLabel3 = new Bunifu.UI.WinForms.BunifuLabel();
             this.bunifuLabel4 = new Bunifu.UI.WinForms.BunifuLabel();
             this.bunifuButton1 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton();
+            this.bunifuLabel5 = new Bunifu.UI.WinForms.BunifuLabel();
+            this.dontHaveAccount = new Bunifu.UI.WinForms.BunifuLabel();
             this.SuspendLayout();
             // 
             // password_check
@@ -405,12 +407,48 @@
             this.bunifuButton1.UseDefaultRadiusAndThickness = true;
             this.bunifuButton1.Click += new System.EventHandler(this.bunifuButton1_Click);
             // 
+            // bunifuLabel5
+            // 
+            this.bunifuLabel5.AllowParentOverrides = false;
+            this.bunifuLabel5.AutoEllipsis = false;
+            this.bunifuLabel5.Cursor = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel5.CursorType = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel5.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.bunifuLabel5.Location = new System.Drawing.Point(87, 296);
+            this.bunifuLabel5.Name = "bunifuLabel5";
+            this.bunifuLabel5.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.bunifuLabel5.Size = new System.Drawing.Size(144, 17);
+            this.bunifuLabel5.TabIndex = 9;
+            this.bunifuLabel5.Text = "У вас ещё нет аккаунта? ";
+            this.bunifuLabel5.TextAlignment = System.Drawing.ContentAlignment.TopLeft;
+            this.bunifuLabel5.TextFormat = Bunifu.UI.WinForms.BunifuLabel.TextFormattingOptions.Default;
+            // 
+            // dontHaveAccount
+            // 
+            this.dontHaveAccount.AllowParentOverrides = false;
+            this.dontHaveAccount.AutoEllipsis = false;
+            this.dontHaveAccount.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.dontHaveAccount.CursorType = System.Windows.Forms.Cursors.Hand;
+            this.dontHaveAccount.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dontHaveAccount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(150)))), ((int)(((byte)(255)))));
+            this.dontHaveAccount.Location = new System.Drawing.Point(235, 298);
+            this.dontHaveAccount.Name = "dontHaveAccount";
+            this.dontHaveAccount.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.dontHaveAccount.Size = new System.Drawing.Size(112, 15);
+            this.dontHaveAccount.TabIndex = 10;
+            this.dontHaveAccount.Text = "Зарегистрироваться";
+            this.dontHaveAccount.TextAlignment = System.Drawing.ContentAlignment.TopLeft;
+            this.dontHaveAccount.TextFormat = Bunifu.UI.WinForms.BunifuLabel.TextFormattingOptions.Default;
+            this.dontHaveAccount.Click += new System.EventHandler(this.dontHaveAccount_Click);
+            // 
             // RegistrationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(442, 426);
+            this.Controls.Add(this.dontHaveAccount);
+            this.Controls.Add(this.bunifuLabel5);
             this.Controls.Add(this.bunifuButton1);
             this.Controls.Add(this.bunifuLabel4);
             this.Controls.Add(this.bunifuLabel3);
@@ -440,5 +478,7 @@
         private Bunifu.UI.WinForms.BunifuLabel bunifuLabel3;
         private Bunifu.UI.WinForms.BunifuLabel bunifuLabel4;
         private Bunifu.UI.WinForms.BunifuButton.BunifuButton bunifuButton1;
+        private Bunifu.UI.WinForms.BunifuLabel bunifuLabel5;
+        private Bunifu.UI.WinForms.BunifuLabel dontHaveAccount;
     }
 }

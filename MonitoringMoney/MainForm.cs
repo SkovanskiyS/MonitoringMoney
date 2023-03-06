@@ -16,15 +16,20 @@ namespace MonitoringMoney
         BindingSource bindingSource;
         DB_API dataBase;
         private bool isWindowOpened;
+
+        public string user_data_table;
+
         public MainForm()
         {
             InitializeComponent();
+
+
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             //dB.CloseConnectionSQL();
-            //Application.Exit();
+            Application.Exit();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -109,10 +114,15 @@ namespace MonitoringMoney
 
             string[] columnNames = { "ID", "Дата", "Клиент", "Обмен", "Валюта", "Сумма", "Курс", "Транзакция","Описание"};
 
-            for (int i = 0; i < allDataGridView.Columns.Count; i++)
+
+            if (allDataGridView.Columns.Count>0)
             {
-                allDataGridView.Columns[i].HeaderText = columnNames[i];
+                for (int i = 0; i < allDataGridView.Columns.Count; i++)
+                {
+                    allDataGridView.Columns[i].HeaderText = columnNames[i];
+                }
             }
+
         }
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {

@@ -763,6 +763,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(546, 512);
             this.Controls.Add(this.bunifuLabel8);
             this.Controls.Add(this.companyName_textbox);
@@ -781,6 +782,7 @@
             this.Controls.Add(this.password_box);
             this.Controls.Add(this.password_check);
             this.Name = "Register";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Register";
             this.Load += new System.EventHandler(this.Register_Load);
             this.ResumeLayout(false);

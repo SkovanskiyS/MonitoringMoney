@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -14,6 +15,9 @@ namespace MonitoringMoney
         private DataTable dataTable;
         private string name_to_search;
         private string connection_text = @"server=localhost;port=3306;username=root;password=root;database=debtorddatabase";
+
+        private string table_name;
+
         public DB_API(string name = "Undefined")
         {
             Initialize();
@@ -26,8 +30,9 @@ namespace MonitoringMoney
         }
         public void Insert(DateTime date_of_reg,string client_name,string get_dive,string currency_,string sumValue,string wellText,string cash_transfer,string descriptionText,bool textbox_status)
         {
-            cmd = new MySqlCommand("INSERT INTO `debtordb`(`Date`, `Client`, `Exchange`, `Currency`, `Amount`, `Rate`, `Transaction`, `Description`) VALUES (@date,@client,@exchange,@currency,@amount,@rate,@transaction,@description)", connection);
-            //cmd = new MySqlCommand("UPDATE `debtordb` SET `Date`=@date,`Client`=@client,`Exchange`=@exchange,`Currency`=@currency,`Amount`=@amount,`Rate`=@rate,`Transaction`=@transaction,`Description`=@description WHERE 1", dB.getConnection());
+            Read_Table_Name();
+
+            cmd = new MySqlCommand("INSERT INTO `"+table_name+"`(`Date`, `Client`, `Exchange`, `Currency`, `Amount`, `Rate`, `Transaction`, `Description`) VALUES (@date,@client,@exchange,@currency,@amount,@rate,@transaction,@description)", connection);
 
             //0 - date, 1 - client name, 2 - give or get, 3 - currency, 4 - amount(sum), 5 - rate(well), 6 - transaction(cash or transfer), 7 - description
             object[] collection_of_data = { date_of_reg.ToString("yyyy-MM-dd"), client_name, get_dive, currency_, sumValue, wellText, cash_transfer, descriptionText };
@@ -50,6 +55,7 @@ namespace MonitoringMoney
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Возникла ошибка. Перепроверьте заполненные данные", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             connection.Close();
@@ -65,9 +71,11 @@ namespace MonitoringMoney
 
         public DataTable LoadAllData()
         {
-            if(connection.State == ConnectionState.Closed) { connection.Open(); }
+
+            Read_Table_Name();
+            if (connection.State == ConnectionState.Closed) { connection.Open(); }
             cmd = connection.CreateCommand();
-            cmd.CommandText = "SELECT * FROM `debtordb`";
+            cmd.CommandText = "SELECT * FROM "+ table_name;
             MySqlDataReader reader = cmd.ExecuteReader();
             dataTable= new DataTable();
             dataTable.Load(reader);
@@ -75,14 +83,26 @@ namespace MonitoringMoney
             return dataTable;
         }
 
+        private void Read_Table_Name()
+        {
+            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\username.txt";
+
+            using (StreamReader reader2 = new StreamReader(path))
+            {
+                table_name = reader2.ReadToEnd();
+            }
+        }
+
         public DataTable Search(string a)
         {
+            Read_Table_Name();
+
             var found_users = FindUsers(); 
             dataTable = new DataTable();
             DataTable emptyDataTable = new DataTable();   
             connection.Open();
 
-            string query = "select * from debtordb where ID in (";
+            string query = "select * from "+table_name+" where ID in (";
             for (int i = 0; i < found_users.Count; i++)
             {
                 query += "@id" + i.ToString() + ",";
@@ -115,11 +135,14 @@ namespace MonitoringMoney
 
         private List<object> GetAllData()
         {
-            if(connection.State == ConnectionState.Closed)
+
+            Read_Table_Name();
+
+            if (connection.State == ConnectionState.Closed)
             {
                 connection.Open();
             }
-            string sql_cmd = @"SELECT `Client`,`ID` FROM debtordb";
+            string sql_cmd = @"SELECT `Client`,`ID` FROM "+table_name;
             var cmd = new MySqlCommand(sql_cmd, connection);
             MySqlDataReader reader;
             reader = cmd.ExecuteReader(); 
@@ -165,7 +188,10 @@ namespace MonitoringMoney
 
         public int GetCountOfObjects()
         {
-            string sqlExpression = "SELECT COUNT(*) FROM debtordb";
+
+            Read_Table_Name();
+
+            string sqlExpression = "SELECT COUNT(*) FROM "+table_name;
             using (MySqlConnection connection = new MySqlConnection(connection_text))
             {
                 connection.Open();
@@ -179,11 +205,14 @@ namespace MonitoringMoney
 
         public DataTable FilterGetOrGive(bool isGet)
         {
+
+            Read_Table_Name();
+
             if (connection.State == ConnectionState.Closed)
             {
                 connection.Open();
             }
-            string query = @"select * from debtordb where Exchange=@exchange";
+            string query = @"select * from "+table_name+" where Exchange=@exchange";
             dataTable = new DataTable();
             using (MySqlCommand command = new MySqlCommand(query,connection))
             {
@@ -202,13 +231,14 @@ namespace MonitoringMoney
 
         public DataTable FilterByDate(DateTime from,DateTime to,DataTable search)
         {
+
+            Read_Table_Name();
+
             if (connection.State == ConnectionState.Closed)
             {
                 connection.Open();
             }
-            string query = @"select * from debtordb where Date between @from and @to";
-            //string query = @"select * from debtordb where Date between STR_TO_DATE(@from,'%Y-%m-%d') and STR_TO_DATE(@to,'%Y-%m-%d')";
-            //string query = @"select * from debtordb where Date between '2000-02-16' and '2023-02-26'";
+            string query = @"select * from "+table_name+" where Date between @from and @to";
             dataTable = search;
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
