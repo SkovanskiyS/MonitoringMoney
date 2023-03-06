@@ -1714,7 +1714,7 @@
             this.spends_text.CursorType = null;
             this.spends_text.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold);
             this.spends_text.ForeColor = System.Drawing.Color.Red;
-            this.spends_text.Location = new System.Drawing.Point(752, 450);
+            this.spends_text.Location = new System.Drawing.Point(15, 554);
             this.spends_text.Name = "spends_text";
             this.spends_text.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spends_text.Size = new System.Drawing.Size(109, 40);
@@ -1729,7 +1729,7 @@
             this.bunifuLabel31.AutoEllipsis = false;
             this.bunifuLabel31.CursorType = null;
             this.bunifuLabel31.Font = new System.Drawing.Font("Calibri", 24F);
-            this.bunifuLabel31.Location = new System.Drawing.Point(752, 405);
+            this.bunifuLabel31.Location = new System.Drawing.Point(15, 509);
             this.bunifuLabel31.Name = "bunifuLabel31";
             this.bunifuLabel31.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.bunifuLabel31.Size = new System.Drawing.Size(108, 39);
@@ -1745,7 +1745,7 @@
             this.get_text.CursorType = null;
             this.get_text.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold);
             this.get_text.ForeColor = System.Drawing.Color.Green;
-            this.get_text.Location = new System.Drawing.Point(193, 450);
+            this.get_text.Location = new System.Drawing.Point(14, 463);
             this.get_text.Name = "get_text";
             this.get_text.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.get_text.Size = new System.Drawing.Size(109, 40);
@@ -1760,7 +1760,7 @@
             this.bunifuLabel28.AutoEllipsis = false;
             this.bunifuLabel28.CursorType = null;
             this.bunifuLabel28.Font = new System.Drawing.Font("Calibri", 24F);
-            this.bunifuLabel28.Location = new System.Drawing.Point(193, 405);
+            this.bunifuLabel28.Location = new System.Drawing.Point(14, 418);
             this.bunifuLabel28.Name = "bunifuLabel28";
             this.bunifuLabel28.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.bunifuLabel28.Size = new System.Drawing.Size(132, 39);
@@ -1775,7 +1775,7 @@
             this.bunifbudget_integeruLabel27.AutoEllipsis = false;
             this.bunifbudget_integeruLabel27.CursorType = null;
             this.bunifbudget_integeruLabel27.Font = new System.Drawing.Font("Calibri", 27.27F, System.Drawing.FontStyle.Bold);
-            this.bunifbudget_integeruLabel27.Location = new System.Drawing.Point(436, 338);
+            this.bunifbudget_integeruLabel27.Location = new System.Drawing.Point(14, 370);
             this.bunifbudget_integeruLabel27.Name = "bunifbudget_integeruLabel27";
             this.bunifbudget_integeruLabel27.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.bunifbudget_integeruLabel27.Size = new System.Drawing.Size(116, 44);
@@ -1790,7 +1790,7 @@
             this.bunifuLabel26.AutoEllipsis = false;
             this.bunifuLabel26.CursorType = null;
             this.bunifuLabel26.Font = new System.Drawing.Font("Calibri", 32F);
-            this.bunifuLabel26.Location = new System.Drawing.Point(436, 279);
+            this.bunifuLabel26.Location = new System.Drawing.Point(14, 311);
             this.bunifuLabel26.Name = "bunifuLabel26";
             this.bunifuLabel26.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.bunifuLabel26.Size = new System.Drawing.Size(243, 53);

@@ -22,7 +22,7 @@ namespace MonitoringMoney
     public partial class Profile : Form
     {
         Profile_DB_API db_api;
-        private Dictionary<object, int> most, lowest;
+        private Dictionary<object, double> most, lowest;
         private bool filter_ON;
 
         public Profile()
@@ -54,17 +54,48 @@ namespace MonitoringMoney
         private void Load_Third_P_Data()
         {
             var dict = db_api.Load_Page_3();
-            name.Text = dict[0];
-            surname.Text = dict[1];
-            company_name.Text = dict[2];
-            username.Text = dict[3];
-            bunifbudget_integeruLabel27.Text = dict[4];
+            name.Text = dict[1];
+            surname.Text = dict[2];
+            company_name.Text = dict[3];
+            username.Text = dict[4];
             budget_integer.Text = dict[4];
 
-            int spends = Get_All_Spends("Взял (одолжил)");
-            int get = Get_All_Spends("Дал (занял)");
+            Profile_DB_API dB_API = new Profile_DB_API();
+ 
+            double spends = Get_All_Spends("Взял (одолжил)");
+            double get = Get_All_Spends("Дал (занял)");
+            dB_API.GetCurrency();
+            if (dB_API.currency ==0)
+            {
+                dB_API.currency = 11380;
+            }
 
-            get_text.Text = 
+            double income = 0;
+            double spends_ = 0;
+
+            if (dict[6].Contains("сум"))
+            {
+               
+                double budget = double.Parse(dict[6].Replace("сум", "").Replace(",", ""));
+                income = (get * dB_API.currency);
+                spends_ = (spends * dB_API.currency);
+
+                get_text.Text = income.ToString("#,#", CultureInfo.InvariantCulture);
+                spends_text.Text = spends_.ToString("#,#", CultureInfo.InvariantCulture);
+
+                bunifbudget_integeruLabel27.Text = (budget + income - spends_).ToString("#,#"+" сум",CultureInfo.InvariantCulture);
+            }
+            else
+            {
+
+                double budget = double.Parse(dict[6].Replace("$", "").Replace(",", ""));
+
+                get_text.Text = income.ToString("#,#", CultureInfo.InvariantCulture);
+                spends_text.Text = spends_.ToString("#,#", CultureInfo.InvariantCulture);
+
+                bunifbudget_integeruLabel27.Text = (budget + get - spends).ToString("#,#"+" $", CultureInfo.InvariantCulture);
+            }
+
 
 
         }
@@ -126,15 +157,15 @@ namespace MonitoringMoney
             int i = 0;
             foreach (var item in most)
             {
-                columnChart.Series["Users"].Points.AddXY(item.Key, item.Value);
-                columnChart.Series["Users"].Points[i].Label = item.Value.ToString();
+                columnChart.Series["Users"].Points.AddXY(item.Key, Math.Round(item.Value,2));
+                columnChart.Series["Users"].Points[i].Label = Math.Round(item.Value,2).ToString();
                 i++;
             }
             int a = 0;
             foreach (var item in lowest)
             {
-                barChart.Series["Users"].Points.AddXY(item.Key, item.Value);
-                barChart.Series["Users"].Points[a].Label = item.Value.ToString();
+                barChart.Series["Users"].Points.AddXY(item.Key, Math.Round(item.Value, 2));
+                barChart.Series["Users"].Points[a].Label = Math.Round(item.Value, 2).ToString();
                 a++;
             }
 
@@ -154,22 +185,22 @@ namespace MonitoringMoney
             int i = 0;
             foreach (var item in most)
             {
-                chart1.Series["Users"].Points.AddXY(item.Key, item.Value);
-                chart1.Series["Users"].Points[i].Label = item.Value.ToString();
+                chart1.Series["Users"].Points.AddXY(item.Key, Math.Round(item.Value, 2));
+                chart1.Series["Users"].Points[i].Label = Math.Round(item.Value, 2).ToString();
                 i++;
             }
             int a = 0;
             foreach (var item in lowest)
             {
-                chart2.Series["Users"].Points.AddXY(item.Key, item.Value);
-                chart2.Series["Users"].Points[a].Label = item.Value.ToString();
+                chart2.Series["Users"].Points.AddXY(item.Key, Math.Round(item.Value, 2));
+                chart2.Series["Users"].Points[a].Label = Math.Round(item.Value, 2).ToString();
                 a++;
             }
         }
 
         private void FilerData(string data_to_get)
         {
-            Dictionary<object, int> all_data = new Dictionary<object, int>();
+            Dictionary<object, double> all_data = new Dictionary<object, double>();
 
 
             if (filter_ON)
@@ -183,8 +214,8 @@ namespace MonitoringMoney
             else all_data = db_api.Get_Name_And_Amount(data_to_get);
 
 
-            most = new Dictionary<object, int>();
-            lowest = new Dictionary<object, int>();
+            most = new Dictionary<object, double>();
+            lowest = new Dictionary<object, double>();
             //var sortedDict = from entry in all_data orderby entry.Value descending select entry;
             var sortedDict = all_data.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
@@ -206,10 +237,10 @@ namespace MonitoringMoney
 
         }
 
-        private int Get_All_Spends(string data_to_get)
+        private double Get_All_Spends(string data_to_get)
         {
-            int amount = 0;
-            Dictionary<object, int> all_data = new Dictionary<object, int>();
+            double amount = 0;
+            Dictionary<object, double> all_data = new Dictionary<object, double>();
 
             if (filter_ON)
             {
@@ -279,7 +310,7 @@ namespace MonitoringMoney
         {
             if (filter_ON) { filter_ON = false; }
             filter_ON = true;
-            int spends = Get_All_Spends("Взял (одолжил)");
+            double spends = Get_All_Spends("Взял (одолжил)");
             if (spends == 0) label_all_spends.Text = "0";
             else
             {
@@ -304,7 +335,7 @@ namespace MonitoringMoney
 
         private void Change_Text_All_Time(string get_text, BunifuLabel label, string plus_or_minus)
         {
-            int spends = Get_All_Spends(get_text);
+            double spends = Get_All_Spends(get_text);
 
             if (spends == 0) label.Text = "0";
             else label.Text = plus_or_minus + spends.ToString("#,#", CultureInfo.InvariantCulture) + $"$ | {plus_or_minus}" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
@@ -314,7 +345,7 @@ namespace MonitoringMoney
         {
             if (filter_ON) { filter_ON = false; }
             filter_ON = true;
-            int spends = Get_All_Spends("Дал (занял)");
+            double spends = Get_All_Spends("Дал (занял)");
 
             if (spends == 0) whole_sum.Text = "0";
             else
