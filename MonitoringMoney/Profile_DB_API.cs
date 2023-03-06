@@ -21,18 +21,35 @@ namespace MonitoringMoney
 
         private string connection_text = @"server=localhost;port=3306;username=root;password=root;database=debtorddatabase";
         public int currency;
+        private string table_name;
         MySqlConnection connection;
         DataTable table;
+        DB_API read_Table_;
+
         public Profile_DB_API()
         {
             connection= new MySqlConnection(connection_text);
             table = new DataTable();
+            read_Table_ = new DB_API();
+        }
+
+        public void Read_Table_Name()
+        {
+            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\username.txt";
+
+            using (StreamReader reader2 = new StreamReader(path))
+            {
+                table_name = reader2.ReadToEnd();
+            }
         }
 
         public DataTable Spends_Income(string pathway)
         {
             table = new DataTable();
-            string query = "select * from debtordb where Exchange=@exchange";
+
+            Read_Table_Name();
+
+            string query = "select * from "+table_name+" where Exchange=@exchange";
             connection.Open();
             using (MySqlCommand command = new MySqlCommand(query, connection))
             {
@@ -51,7 +68,8 @@ namespace MonitoringMoney
 
         public void WholeSpends()
         {
-            string query = "select `Amount` from debtordb";
+            Read_Table_Name();
+            string query = "select `Amount` from "+table_name;
             connection.Open();
             var all_amount = new List<object>();
             using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -94,7 +112,9 @@ namespace MonitoringMoney
         {
             if (currency == 0) GetCurrency();
 
-            string query = "select `Client`,`Amount` from debtordb where Exchange=@exchange";
+            Read_Table_Name();
+
+            string query = "select `Client`,`Amount` from "+table_name+" where Exchange=@exchange";
             Dictionary<object, int> data = new Dictionary<object, int>();
             if (connection.State == ConnectionState.Closed)
             {
@@ -132,7 +152,10 @@ namespace MonitoringMoney
 
         public Dictionary<object, int> Get_Data_By_DateTime(DateTime from,DateTime to,string get_or_give)
         {
-            string query = "select `Client`,`Amount` from debtordb where Date between @from and @to and Exchange=@exchange";
+
+            Read_Table_Name();
+
+            string query = "select `Client`,`Amount` from "+table_name+" where Date between @from and @to and Exchange=@exchange";
             Dictionary<object, int> data = new Dictionary<object, int>();
             if (connection.State == ConnectionState.Closed)
             {

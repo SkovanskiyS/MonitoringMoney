@@ -83,7 +83,7 @@ namespace MonitoringMoney
             return dataTable;
         }
 
-        private void Read_Table_Name()
+        public void Read_Table_Name()
         {
             string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\username.txt";
 

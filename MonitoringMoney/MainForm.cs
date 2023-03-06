@@ -252,6 +252,7 @@ namespace MonitoringMoney
             searchTextBox.Text = "";
             allDataGridView.DataSource = dataBase.LoadAllData();
         }
+
     }
 }
 
