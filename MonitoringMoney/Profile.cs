@@ -433,49 +433,12 @@ namespace MonitoringMoney
 
         private void update_btn_Click(object sender, EventArgs e)
         {
-
-            var selected_index = allDataGridView.CurrentCell.RowIndex;
-
-            List<object> data = new List<object>{ clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text };
-
-            //if (allDataGridView.Rows[selected_index].Cells[0].Value.ToString()!=string.Empty)
-            //{
-            //    allDataGridView.Rows[selected_index].SetValues(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]);
-            //    allDataGridView.Rows[selected_index].Cells[7].Value = DataRowState.Modified;
-            //}
-
-            //object id = 0;
-            //object dateTime = DateTime.Now;
-            //string client = "";
-            //string exchange = "";
-            //string well = "";
-            //string sum = "";
-            //string currency= "";
-            //string transaction = "";
-            //string description = "";
-
-
-
-            //id = allDataGridView.Rows[selected_index].Cells[0].Value;
-            //dateTime = allDataGridView.Rows[selected_index].Cells[1].Value;
-            //client = allDataGridView.Rows[selected_index].Cells[2].Value.ToString();
-            //exchange = allDataGridView.Rows[selected_index].Cells[3].Value.ToString();
-            //currency = allDataGridView.Rows[selected_index].Cells[4].Value.ToString();
-            //sum = allDataGridView.Rows[selected_index].Cells[5].Value.ToString();
-            //well = allDataGridView.Rows[selected_index].Cells[6].Value.ToString();
-            //transaction = allDataGridView.Rows[selected_index].Cells[7].Value.ToString();
-            //description = allDataGridView.Rows[selected_index].Cells[8].Value.ToString();
-
-
-            //dateOfReg.Value = Convert.ToDateTime(dateTime);
-            //clientNameT.Text = client;
-            //get_giveDropdown.Text = exchange;
-            //currency_Dropdown.Text = currency;  
-            //sumValue.Text = sum;
-            //wellText.Text = well;
-            //cash_transfer.Text = transaction;
-            //descriptionText.Text = description;
-
+            try
+            {
+                var selected_index = allDataGridView.CurrentCell.RowIndex;
+            }
+            catch (Exception) { MessageBox.Show("Пустое значение", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+              
 
             db_api.Update_Data(user_id, dateOfReg.Value, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text);
 
@@ -484,27 +447,18 @@ namespace MonitoringMoney
 
         private void allDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            object id = 0;
-            object dateTime = DateTime.Now;
-            string client = "";
-            string exchange = "";
-            string well = "";
-            string sum = "";
-            string currency = "";
-            string transaction = "";
-            string description = "";
 
             var selected_index = allDataGridView.CurrentCell.RowIndex;
 
-            id = allDataGridView.Rows[selected_index].Cells[0].Value;
-            dateTime = allDataGridView.Rows[selected_index].Cells[1].Value;
-            client = allDataGridView.Rows[selected_index].Cells[2].Value.ToString();
-            exchange = allDataGridView.Rows[selected_index].Cells[3].Value.ToString();
-            currency = allDataGridView.Rows[selected_index].Cells[4].Value.ToString();
-            sum = allDataGridView.Rows[selected_index].Cells[5].Value.ToString();
-            well = allDataGridView.Rows[selected_index].Cells[6].Value.ToString();
-            transaction = allDataGridView.Rows[selected_index].Cells[7].Value.ToString();
-            description = allDataGridView.Rows[selected_index].Cells[8].Value.ToString();
+            object id = allDataGridView.Rows[selected_index].Cells[0].Value;
+            object dateTime = allDataGridView.Rows[selected_index].Cells[1].Value;
+            string client = allDataGridView.Rows[selected_index].Cells[2].Value.ToString();
+            string exchange = allDataGridView.Rows[selected_index].Cells[3].Value.ToString();
+            string currency = allDataGridView.Rows[selected_index].Cells[4].Value.ToString();
+            string sum = allDataGridView.Rows[selected_index].Cells[5].Value.ToString();
+            string well = allDataGridView.Rows[selected_index].Cells[6].Value.ToString();
+            string transaction = allDataGridView.Rows[selected_index].Cells[7].Value.ToString();
+            string description = allDataGridView.Rows[selected_index].Cells[8].Value.ToString();
 
 
             dateOfReg.Value = Convert.ToDateTime(dateTime);
@@ -515,7 +469,6 @@ namespace MonitoringMoney
             wellText.Text = well;
             cash_transfer.Text = transaction;
             descriptionText.Text = description;
-
             user_id = Convert.ToInt32(id);
         }
 

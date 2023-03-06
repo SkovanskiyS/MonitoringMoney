@@ -253,11 +253,15 @@ namespace MonitoringMoney
                 try
                 {
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    MessageBox.Show("Rows affected: " + rowsAffected.ToString());
+                    if (rowsAffected>0)
+                    {
+                        MessageBox.Show("Успешно изменён!\nЗатронутые ряды: " + rowsAffected.ToString(),"Изменено",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    MessageBox.Show(ex.ToString());
                 }
             }
             connection.Close();
@@ -271,11 +275,19 @@ namespace MonitoringMoney
             using (MySqlCommand cmd = new MySqlCommand(sql,connection))
             {
 
-                if (MessageBox.Show("Вы уверены?", "Удалить", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                if (cmd.ExecuteNonQuery() == 1)
                 {
-                    MessageBox.Show("Удалено!");
-                    cmd.ExecuteNonQuery();
+
+                    if (MessageBox.Show("Вы уверены?", "Удалить", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                    {
+                        MessageBox.Show("Удалено!");
+                    }
                 }
+                else
+                {
+                    MessageBox.Show("Пользователь не выбран");
+                }
+
             }
             connection.Close();
 
