@@ -253,6 +253,10 @@ namespace MonitoringMoney
             allDataGridView.DataSource = dataBase.LoadAllData();
         }
 
+        private void sumValue_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

@@ -520,23 +520,23 @@
   <data name="bunifuLabel15.BaseStylesheet" xml:space="preserve">
     <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 15,14pt; width: 100%; height: 100%; font-style: normal; font-weight: bold; text-decoration: none; color: rgb(0, 0, 0); text-align: left; }</value>
   </data>
-  <data name="bunifuLabel30.BaseStylesheet" xml:space="preserve">
+  <data name="spends_text.BaseStylesheet" xml:space="preserve">
     <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 20,25pt; width: 100%; height: 100%; font-style: normal; font-weight: bold; text-decoration: none; color: rgb(255, 0, 0); text-align: left; }</value>
   </data>
   <data name="bunifuLabel31.BaseStylesheet" xml:space="preserve">
     <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 24pt; width: 100%; height: 100%; font-style: normal; font-weight: normal; text-decoration: none; color: rgb(0, 0, 0); text-align: left; }</value>
   </data>
-  <data name="bunifuLabel29.BaseStylesheet" xml:space="preserve">
+  <data name="get_text.BaseStylesheet" xml:space="preserve">
     <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 20,25pt; width: 100%; height: 100%; font-style: normal; font-weight: bold; text-decoration: none; color: rgb(0, 128, 0); text-align: left; }</value>
   </data>
   <data name="bunifuLabel28.BaseStylesheet" xml:space="preserve">
     <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 24pt; width: 100%; height: 100%; font-style: normal; font-weight: normal; text-decoration: none; color: rgb(0, 0, 0); text-align: left; }</value>
   </data>
   <data name="bunifbudget_integeruLabel27.BaseStylesheet" xml:space="preserve">
-    <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 20,25pt; width: 100%; height: 100%; font-style: normal; font-weight: bold; text-decoration: none; color: rgb(0, 0, 0); text-align: left; }</value>
+    <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 27,27pt; width: 100%; height: 100%; font-style: normal; font-weight: bold; text-decoration: none; color: rgb(0, 0, 0); text-align: left; }</value>
   </data>
   <data name="bunifuLabel26.BaseStylesheet" xml:space="preserve">
-    <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 26pt; width: 100%; height: 100%; font-style: normal; font-weight: normal; text-decoration: none; color: rgb(0, 0, 0); text-align: left; }</value>
+    <value>#bunifu-label { padding: 0px; font-family: 'Calibri'; font-size: 32pt; width: 100%; height: 100%; font-style: normal; font-weight: normal; text-decoration: none; color: rgb(0, 0, 0); text-align: left; }</value>
   </data>
   <data name="bunifuButton2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -741,8 +741,8 @@
   </data>
   <data name="panel_of_btns.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAAKoAAAJSCAYAAABTKF7fAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAZtSURBVHhe7dSxjcMwFAVBhS7D4YUuxSU4dBmqXDrqxOQ6
+        iVBORw0KGgoAAAANSUhEUgAAAKoAAAJACAYAAAAdNv1PAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAY+SURBVHhe7dSxjcMwFAVBhS7D4YUuxSU4dBmqXDrqxOQ6
         4AIzwAOBHy+4Qcp5ns+x3Wyh/cw8b+PwGoMVvWemf6Fe9cKK9pmpUFmaUEkQKglCJUGoJAiVBKGSIFQS
         hEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGS
         IFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiV
@@ -768,9 +768,8 @@
         hEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGS
         IFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiV
         BKGSIFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGo
-        JAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGSIFQShEqCUEkQKglC
-        JUGoJAiVBKGSIFQShEqCUEkQKgn/Qn3fN1jLcRzfmelt3D5j189qtsSuSMf7mInC6rbtF8tZS8e2UgdD
-        AAAAAElFTkSuQmCC
+        JAiVBKGSIFQShEqCUEkQKglCJUGoJAiVBKGSIFQShErCv1Df9w3WchzHd2Z6G7fP2PWzmi2xK9LxPmai
+        sLpt+wW3+Eoia+O4WQAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="bunifuPanel4.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -847,14 +846,15 @@
   </data>
   <data name="header_left_panel.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAAKoAAAB8CAYAAAD5ESuwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFvSURBVHhe7dIxEYAwAMDAKgJpoIwKQkwxgIDm7odfMmcc
+        iVBORw0KGgoAAAANSUhEUgAAAKoAAACOCAYAAAChS5OiAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGeSURBVHhe7dIxEYAwAMDAKgJpoIwKQkwxgIDm7odfMmcc
         1/Oe91yws/EXYTdGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiV
         BKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGo
         JBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglG
         JcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqCUUkw
         KglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqC
-        UUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoBMz1AfOEf2X7L/wUAAAAAElFTkSuQmCC
+        UUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQSjEqCUUkwKglGJcGoJBiVBKOSYFQS
+        jEqCUUkwKglGJcGoJBiVBKMSMNcHwSMBbSnm3MMAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="budget_integer.BaseStylesheet" xml:space="preserve">

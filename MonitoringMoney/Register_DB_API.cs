@@ -20,9 +20,9 @@ namespace MonitoringMoney
             connection = new MySqlConnection(connection_text);
         }
 
-        public void Add_User(string username, string password,string name,string surname,string company_name)
+        public void Add_User(string username, string password,string name,string surname,string company_name,string budget,string currency)
         {
-            string sqlQuery = "INSERT INTO `users`(`Name`, `Surname`, `Company_Name`, `Username`, `Password`) VALUES (@name,@surname,@company_name,@username,@password)";
+            string sqlQuery = "INSERT INTO `users`(`Name`, `Surname`, `Company_Name`, `Username`, `Password`,`Budget`,`Currency`) VALUES (@name,@surname,@company_name,@username,@password,@budget,@currency)";
             bool successful = false;
             if (UserExists(username))
             {
@@ -36,6 +36,8 @@ namespace MonitoringMoney
                     cmd.Parameters.AddWithValue("company_name", company_name);
                     cmd.Parameters.AddWithValue("username", username);
                     cmd.Parameters.AddWithValue("password", password);
+                    cmd.Parameters.AddWithValue("budget", budget);
+                    cmd.Parameters.AddWithValue("currency", currency);
 
                     if (cmd.ExecuteNonQuery() == 1) { MessageBox.Show("Успешно добавлен", "Добавлен", MessageBoxButtons.OK, MessageBoxIcon.Information); successful = true; };
                 }

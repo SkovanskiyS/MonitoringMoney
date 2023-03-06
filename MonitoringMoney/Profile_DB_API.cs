@@ -194,5 +194,35 @@ namespace MonitoringMoney
         }
 
 
+        public List<string> Load_Page_3()
+        {
+            Read_Table_Name();
+
+            var dict = new List<string>();
+
+            string sqlQuery = "SELECT * FROM users WHERE Username = @username";
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+            using (var cmd = new MySqlCommand(sqlQuery,connection))
+            {
+                cmd.Parameters.AddWithValue("@username", table_name.Replace("_data", ""));
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            dict.Add(reader.GetString(i));
+                        }
+                    }
+
+                }
+            }
+            connection.Close();
+            return dict;
+        }
+
     }
 }

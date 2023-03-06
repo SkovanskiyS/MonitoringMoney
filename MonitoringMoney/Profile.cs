@@ -41,6 +41,8 @@ namespace MonitoringMoney
             ChangeColumn(spendGridView);
             ChangeColumn(incomeGridView);
             SetMyCustomFormat();
+            Load_Third_P_Data();
+
         }
         public void SetMyCustomFormat()
         {
@@ -49,6 +51,23 @@ namespace MonitoringMoney
 
         }
 
+        private void Load_Third_P_Data()
+        {
+            var dict = db_api.Load_Page_3();
+            name.Text = dict[0];
+            surname.Text = dict[1];
+            company_name.Text = dict[2];
+            username.Text = dict[3];
+            bunifbudget_integeruLabel27.Text = dict[4];
+            budget_integer.Text = dict[4];
+
+            int spends = Get_All_Spends("Взял (одолжил)");
+            int get = Get_All_Spends("Дал (занял)");
+
+            get_text.Text = 
+
+
+        }
         private void ChangeColumn(DataGridView dataGridView)
         {
             string[] columnNames = { "ID", "Дата", "Клиент", "Обмен", "Валюта", "Сумма", "Курс", "Транзакция", "Описание" };
@@ -325,6 +344,11 @@ namespace MonitoringMoney
         private void bunifuButton23_Click(object sender, EventArgs e)
         {
             main_menu.SetPage(2);
+        }
+
+        private void whole_sum_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void bunifuButton21_Click(object sender, EventArgs e)

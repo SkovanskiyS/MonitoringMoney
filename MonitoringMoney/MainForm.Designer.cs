@@ -1277,6 +1277,7 @@
             this.sumValue.TextPlaceholder = "Введите сумму";
             this.sumValue.UseSystemPasswordChar = false;
             this.sumValue.WordWrap = true;
+            this.sumValue.TextChanged += new System.EventHandler(this.sumValue_TextChanged);
             this.sumValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.bunifuTextBox1_KeyPress);
             this.sumValue.Leave += new System.EventHandler(this.sumValue_Leave);
             // 
