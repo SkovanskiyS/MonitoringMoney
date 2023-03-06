@@ -80,8 +80,8 @@ namespace MonitoringMoney
                 income = (get * dB_API.currency);
                 spends_ = (spends * dB_API.currency);
 
-                get_text.Text = income.ToString("#,#", CultureInfo.InvariantCulture);
-                spends_text.Text = spends_.ToString("#,#", CultureInfo.InvariantCulture);
+                get_text.Text = "+"+income.ToString("#,#", CultureInfo.InvariantCulture);
+                spends_text.Text = "-"+spends_.ToString("#,#", CultureInfo.InvariantCulture);
 
                 bunifbudget_integeruLabel27.Text = (budget + income - spends_).ToString("#,#"+" сум",CultureInfo.InvariantCulture);
             }
@@ -90,8 +90,8 @@ namespace MonitoringMoney
 
                 double budget = double.Parse(dict[6].Replace("$", "").Replace(",", ""));
 
-                get_text.Text = income.ToString("#,#", CultureInfo.InvariantCulture);
-                spends_text.Text = spends_.ToString("#,#", CultureInfo.InvariantCulture);
+                get_text.Text = "+"+income.ToString("#,#", CultureInfo.InvariantCulture);
+                spends_text.Text = "-"+spends_.ToString("#,#", CultureInfo.InvariantCulture);
 
                 bunifbudget_integeruLabel27.Text = (budget + get - spends).ToString("#,#"+" $", CultureInfo.InvariantCulture);
             }

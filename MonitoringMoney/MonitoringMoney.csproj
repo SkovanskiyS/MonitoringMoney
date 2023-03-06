@@ -503,6 +503,9 @@
   <ItemGroup>
     <None Include="Resources\1398919_close_cross_incorrect_invalid_x_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\392496_gear_setting_settings_tools_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.6.4\build\Fody.targets" Condition="Exists('..\packages\Fody.6.6.4\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
