@@ -13,6 +13,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json.Linq;
 using static IronPython.Modules._ast;
 using System.Globalization;
+using TheArtOfDev.HtmlRenderer.Adapters;
 
 namespace MonitoringMoney
 {
@@ -228,6 +229,58 @@ namespace MonitoringMoney
             connection.Close();
             return dict;
         }
+
+        public void Update_Data(int id,object date_of_reg, string client_name, string get_dive, string currency_, string sumValue, string wellText, string cash_transfer, string descriptionText)
+        {
+            Read_Table_Name();
+
+            string query ="UPDATE " + table_name + " SET `Date` = @date, `Client` = @client, `Exchange` = @exchange, `Currency` = @currency, `Amount` = @amount, `Rate` = @rate, `Transaction` = @transaction, `Description` = @description WHERE `ID` = @id;";
+
+            connection.Open();
+
+            using (MySqlCommand cmd = new MySqlCommand(query,connection))
+            {
+                cmd.Parameters.AddWithValue("date",date_of_reg);
+                cmd.Parameters.AddWithValue("client", client_name);
+                cmd.Parameters.AddWithValue("exchange", get_dive);
+                cmd.Parameters.AddWithValue("currency", currency_);
+                cmd.Parameters.AddWithValue("amount", sumValue);
+                cmd.Parameters.AddWithValue("rate", wellText);
+                cmd.Parameters.AddWithValue("transaction", cash_transfer);
+                cmd.Parameters.AddWithValue("description", descriptionText);
+                cmd.Parameters.AddWithValue("id", id);
+
+                try
+                {
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    MessageBox.Show("Rows affected: " + rowsAffected.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+            connection.Close();
+        }   
+        public void Delete_Data(int ID)
+        {
+            Read_Table_Name();
+            string sql = "DELETE FROM " + table_name + " WHERE ID="+ID;
+
+            connection.Open();
+            using (MySqlCommand cmd = new MySqlCommand(sql,connection))
+            {
+
+                if (MessageBox.Show("Вы уверены?", "Удалить", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                {
+                    MessageBox.Show("Удалено!");
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            connection.Close();
+
+        }
+                
 
     }
 }

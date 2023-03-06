@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -22,6 +23,9 @@ namespace MonitoringMoney
     public partial class Profile : Form
     {
         Profile_DB_API db_api;
+        DB_API dataBase;
+        SqlDataAdapter dataAdapter;
+        private int user_id;
         private Dictionary<object, double> most, lowest;
         private bool filter_ON;
 
@@ -42,7 +46,7 @@ namespace MonitoringMoney
             ChangeColumn(incomeGridView);
             SetMyCustomFormat();
             Load_Third_P_Data();
-
+            Load_Fourth_Page();
         }
         public void SetMyCustomFormat()
         {
@@ -50,6 +54,17 @@ namespace MonitoringMoney
 
 
         }
+
+
+
+        private void Load_Fourth_Page()
+        {
+            dataBase = new DB_API();
+
+            allDataGridView.DataSource = dataBase.LoadAllData();
+        }
+
+
 
         private void Load_Third_P_Data()
         {
@@ -99,6 +114,8 @@ namespace MonitoringMoney
 
 
         }
+
+
         private void ChangeColumn(DataGridView dataGridView)
         {
             string[] columnNames = { "ID", "Дата", "Клиент", "Обмен", "Валюта", "Сумма", "Курс", "Транзакция", "Описание" };
@@ -380,6 +397,134 @@ namespace MonitoringMoney
         private void whole_sum_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            dataBase = new DB_API(searchTextBox.Text);
+            if (searchTextBox.Text.Length > 0)
+            {
+                allDataGridView.DataSource = dataBase.Search(searchTextBox.Text);
+            }
+            else
+            {
+                allDataGridView.DataSource = dataBase.LoadAllData();
+            }
+
+        }
+
+        private void bunifuIconButton1_Click(object sender, EventArgs e)
+        {
+            searchTextBox.Text = "";
+            allDataGridView.DataSource = dataBase.LoadAllData();
+        }
+
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+        private void bunifuButton24_Click(object sender, EventArgs e)
+        {
+            main_menu.SetPage(3);
+        }
+
+        private void update_btn_Click(object sender, EventArgs e)
+        {
+
+            var selected_index = allDataGridView.CurrentCell.RowIndex;
+
+            List<object> data = new List<object>{ clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text };
+
+            //if (allDataGridView.Rows[selected_index].Cells[0].Value.ToString()!=string.Empty)
+            //{
+            //    allDataGridView.Rows[selected_index].SetValues(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]);
+            //    allDataGridView.Rows[selected_index].Cells[7].Value = DataRowState.Modified;
+            //}
+
+            //object id = 0;
+            //object dateTime = DateTime.Now;
+            //string client = "";
+            //string exchange = "";
+            //string well = "";
+            //string sum = "";
+            //string currency= "";
+            //string transaction = "";
+            //string description = "";
+
+
+
+            //id = allDataGridView.Rows[selected_index].Cells[0].Value;
+            //dateTime = allDataGridView.Rows[selected_index].Cells[1].Value;
+            //client = allDataGridView.Rows[selected_index].Cells[2].Value.ToString();
+            //exchange = allDataGridView.Rows[selected_index].Cells[3].Value.ToString();
+            //currency = allDataGridView.Rows[selected_index].Cells[4].Value.ToString();
+            //sum = allDataGridView.Rows[selected_index].Cells[5].Value.ToString();
+            //well = allDataGridView.Rows[selected_index].Cells[6].Value.ToString();
+            //transaction = allDataGridView.Rows[selected_index].Cells[7].Value.ToString();
+            //description = allDataGridView.Rows[selected_index].Cells[8].Value.ToString();
+
+
+            //dateOfReg.Value = Convert.ToDateTime(dateTime);
+            //clientNameT.Text = client;
+            //get_giveDropdown.Text = exchange;
+            //currency_Dropdown.Text = currency;  
+            //sumValue.Text = sum;
+            //wellText.Text = well;
+            //cash_transfer.Text = transaction;
+            //descriptionText.Text = description;
+
+
+            db_api.Update_Data(user_id, dateOfReg.Value, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text);
+
+            allDataGridView.DataSource = dataBase.LoadAllData();
+        }
+
+        private void allDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            object id = 0;
+            object dateTime = DateTime.Now;
+            string client = "";
+            string exchange = "";
+            string well = "";
+            string sum = "";
+            string currency = "";
+            string transaction = "";
+            string description = "";
+
+            var selected_index = allDataGridView.CurrentCell.RowIndex;
+
+            id = allDataGridView.Rows[selected_index].Cells[0].Value;
+            dateTime = allDataGridView.Rows[selected_index].Cells[1].Value;
+            client = allDataGridView.Rows[selected_index].Cells[2].Value.ToString();
+            exchange = allDataGridView.Rows[selected_index].Cells[3].Value.ToString();
+            currency = allDataGridView.Rows[selected_index].Cells[4].Value.ToString();
+            sum = allDataGridView.Rows[selected_index].Cells[5].Value.ToString();
+            well = allDataGridView.Rows[selected_index].Cells[6].Value.ToString();
+            transaction = allDataGridView.Rows[selected_index].Cells[7].Value.ToString();
+            description = allDataGridView.Rows[selected_index].Cells[8].Value.ToString();
+
+
+            dateOfReg.Value = Convert.ToDateTime(dateTime);
+            clientNameT.Text = client;
+            get_giveDropdown.Text = exchange;
+            currency_Dropdown.Text = currency;
+            sumValue.Text = sum;
+            wellText.Text = well;
+            cash_transfer.Text = transaction;
+            descriptionText.Text = description;
+
+            user_id = Convert.ToInt32(id);
+        }
+
+        private void delete_btn_Click(object sender, EventArgs e)
+        {
+
+            db_api.Delete_Data(user_id);
+
+            allDataGridView.DataSource = dataBase.LoadAllData();
         }
 
         private void bunifuButton21_Click(object sender, EventArgs e)
