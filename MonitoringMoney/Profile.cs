@@ -1,25 +1,14 @@
-﻿using Bunifu.Charts.WinForms;
-using Bunifu.Dataviz.WinForms;
-using Bunifu.UI.WinForms;
-using IronPython.Runtime.Operations;
+﻿using Bunifu.UI.WinForms;
 using MonitoringMoney.Properties;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using static IronPython.Modules._ast;
-using static IronPython.Modules.PythonDateTime;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace MonitoringMoney
