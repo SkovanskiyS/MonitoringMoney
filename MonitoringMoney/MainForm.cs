@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
 using Bunifu.UI.WinForms;
 using MySql.Data.MySqlClient;
+
 
 namespace MonitoringMoney
 {
@@ -16,7 +18,7 @@ namespace MonitoringMoney
         BindingSource bindingSource;
         DB_API dataBase;
         private bool isWindowOpened;
-
+        private int currency;
         public string user_data_table;
 
         public MainForm()
@@ -29,11 +31,13 @@ namespace MonitoringMoney
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             //dB.CloseConnectionSQL();
-            Application.Exit();
+            //Application.Exit();
+            this.Close();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+
             dB = new DB();
             dataTable = new DataTable();
             dataAdapter = new MySqlDataAdapter();
@@ -43,7 +47,29 @@ namespace MonitoringMoney
             ChangeColumnName();
             countOfUsersLabel.Text = Convert.ToString(allDataGridView.RowCount);
             this.KeyPreview = true;
+
         }
+
+
+        public void GetCurrency()
+        {
+            try
+            {
+                var timeoutInMilliseconds = 5000;
+                var uri = new Uri("https://bank.uz/currency");
+                var doc = Supremes.Dcsoup.Parse(uri, timeoutInMilliseconds);
+                var ratingSpan = doc.Select("span[class=medium-text]");
+                double d_currency = double.Parse(ratingSpan.Text.Substring(23, 9).Replace(".", ","));
+                currency = Convert.ToInt32(d_currency);
+            }
+            catch (Exception)
+            {
+                currency = 0;
+                MessageBox.Show("Не удалось загрузить курс доллара","Ошибка",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            }
+
+        }
+
 
         private void bunifuTextBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -215,6 +241,16 @@ namespace MonitoringMoney
 
         private void addBtn_Click(object sender, EventArgs e)
         {
+
+
+            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\currency.txt";
+
+            using (var write = new StreamWriter(path))
+            {
+                write.Write(wellText.Text);
+            }
+
+
             changeText();
             dataBase = new DB_API();
             dataBase.Insert(dateOfReg.Value.Date, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text, wellText.Enabled);
@@ -256,6 +292,29 @@ namespace MonitoringMoney
         private void sumValue_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void wellText_TextChanged(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void wellText_Click(object sender, EventArgs e)
+        {
+
+            if (!(currency>0))
+            {
+                GetCurrency();
+            }
+
+            wellText.Enabled = true;
+            wellText.Text = currency.ToString();
+        }
+
+        private void bunifuButton1_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

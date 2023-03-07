@@ -39,7 +39,7 @@ namespace MonitoringMoney
                     cmd.Parameters.AddWithValue("budget", budget);
                     cmd.Parameters.AddWithValue("currency", currency);
 
-                    if (cmd.ExecuteNonQuery() == 1) { MessageBox.Show("Успешно добавлен", "Добавлен", MessageBoxButtons.OK, MessageBoxIcon.Information); successful = true; };
+                    if (cmd.ExecuteNonQuery() == 1) { MessageBox.Show("Успешно зарегистрирован", "Добавлен", MessageBoxButtons.OK, MessageBoxIcon.Information); successful = true; };
                 }
             }
 

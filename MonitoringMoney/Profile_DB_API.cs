@@ -90,33 +90,34 @@ namespace MonitoringMoney
 
         }
 
-        public void GetCurrency()
-        {
-            try
-            {
-                var timeoutInMilliseconds = 5000;
-                var uri = new Uri("https://bank.uz/currency");
-                var doc = Supremes.Dcsoup.Parse(uri, timeoutInMilliseconds);
-                var ratingSpan = doc.Select("span[class=medium-text]");
-                double d_currency = double.Parse(ratingSpan.Text.Substring(23, 9).Replace(".", ","));
-                currency = Convert.ToInt32(d_currency);
-            }
-            catch (Exception e)
-            {
-                currency = 0;
-                MessageBox.Show(e.Message);
-            }
+        //public void GetCurrency()
+        //{
+        //    try
+        //    {
+        //        var timeoutInMilliseconds = 5000;
+        //        var uri = new Uri("https://bank.uz/currency");
+        //        var doc = Supremes.Dcsoup.Parse(uri, timeoutInMilliseconds);
+        //        var ratingSpan = doc.Select("span[class=medium-text]");
+        //        double d_currency = double.Parse(ratingSpan.Text.Substring(23, 9).Replace(".", ","));
+        //        currency = Convert.ToInt32(d_currency);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        currency = 0;
+        //        MessageBox.Show(e.Message);
+        //    }
             
-        }
+        //}
 
         public Dictionary<object, double> Get_Name_And_Amount(string get_or_give)
         {
-            if (currency == 0) GetCurrency();
+            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\currency.txt";
 
-            if (currency==0)
+            using (var reader = new StreamReader(path))
             {
-                currency = 11375;
+                currency = reader.Read();
             }
+          
 
             Read_Table_Name();
 

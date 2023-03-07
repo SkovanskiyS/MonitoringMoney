@@ -2,6 +2,7 @@
 using Bunifu.Dataviz.WinForms;
 using Bunifu.UI.WinForms;
 using IronPython.Runtime.Operations;
+using MonitoringMoney.Properties;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,8 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static IronPython.Modules._ast;
 using static IronPython.Modules.PythonDateTime;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace MonitoringMoney
 {
@@ -24,10 +28,17 @@ namespace MonitoringMoney
     {
         Profile_DB_API db_api;
         DB_API dataBase;
-        SqlDataAdapter dataAdapter;
         private int user_id;
         private Dictionary<object, double> most, lowest;
         private bool filter_ON;
+        private const int WM_CLOSE = 0x10;
+
+        // Import the user32.dll library
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
         public Profile()
         {
@@ -47,6 +58,8 @@ namespace MonitoringMoney
             SetMyCustomFormat();
             Load_Third_P_Data();
             Load_Fourth_Page();
+            LoadPic();
+
         }
         public void SetMyCustomFormat()
         {
@@ -55,7 +68,29 @@ namespace MonitoringMoney
 
         }
 
+        private void LoadPic()
+        {
+            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\picLoc.txt";
 
+            using (var read = new StreamReader(path))
+            {
+
+                string loc = read.ReadToEnd();
+
+                if (loc.Length!=0)
+                {
+                    profile_pic.ImageLocation = loc;
+                    pictureBox5.ImageLocation = loc;
+
+                }
+                else
+                {
+                    Image myImage = Resources.profile;
+                    pictureBox5.Image = myImage;
+                    profile_pic.Image = myImage;
+                }
+            }
+        }
 
         private void Load_Fourth_Page()
         {
@@ -75,14 +110,25 @@ namespace MonitoringMoney
             username.Text = dict[4];
             budget_integer.Text = dict[4];
 
+            if (dict[1].Length>0)
+            {
+                companyName.Text = dict[1];
+            }
+            else
+            {
+                companyName.Text = dict[3];
+            }
+
             Profile_DB_API dB_API = new Profile_DB_API();
  
             double spends = Get_All_Spends("Взял (одолжил)");
             double get = Get_All_Spends("Дал (занял)");
-            dB_API.GetCurrency();
-            if (dB_API.currency ==0)
+            int currency = 0;
+            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\currency.txt";
+
+            using (var reader = new StreamReader(path))
             {
-                dB_API.currency = 11380;
+                currency = int.Parse(reader.ReadToEnd());
             }
 
             double income = 0;
@@ -92,11 +138,13 @@ namespace MonitoringMoney
             {
                
                 double budget = double.Parse(dict[6].Replace("сум", "").Replace(",", ""));
-                income = (get * dB_API.currency);
-                spends_ = (spends * dB_API.currency);
 
-                get_text.Text = "+"+income.ToString("#,#", CultureInfo.InvariantCulture);
-                spends_text.Text = "-"+spends_.ToString("#,#", CultureInfo.InvariantCulture);
+                budget_integer.Text = budget.ToString("#,#"+" сум", CultureInfo.InvariantCulture);
+                income = (get * currency);
+                spends_ = (spends * currency);
+
+                get_text.Text = "+"+income.ToString("#,#"+" сум", CultureInfo.InvariantCulture);
+                spends_text.Text = "-"+spends_.ToString("#,#"+" сум", CultureInfo.InvariantCulture);
 
                 bunifbudget_integeruLabel27.Text = (budget + income - spends_).ToString("#,#"+" сум",CultureInfo.InvariantCulture);
             }
@@ -105,8 +153,12 @@ namespace MonitoringMoney
 
                 double budget = double.Parse(dict[6].Replace("$", "").Replace(",", ""));
 
-                get_text.Text = "+"+income.ToString("#,#", CultureInfo.InvariantCulture);
-                spends_text.Text = "-"+spends_.ToString("#,#", CultureInfo.InvariantCulture);
+                income = (get);
+                spends_ = (spends);
+
+                budget_integer.Text = budget.ToString("#,#" + " $", CultureInfo.InvariantCulture);
+                get_text.Text = "+"+income.ToString("#,#"+" $", CultureInfo.InvariantCulture);
+                spends_text.Text = "-"+spends_.ToString("#,#"+" $", CultureInfo.InvariantCulture);
 
                 bunifbudget_integeruLabel27.Text = (budget + get - spends).ToString("#,#"+" $", CultureInfo.InvariantCulture);
             }
@@ -478,6 +530,85 @@ namespace MonitoringMoney
             db_api.Delete_Data(user_id);
 
             allDataGridView.DataSource = dataBase.LoadAllData();
+        }
+
+        private void bunifuButton3_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void bunifuButton1_Click_1(object sender, EventArgs e)
+        {
+            using (var openFileDialog1 = new OpenFileDialog())
+            {
+                openFileDialog1.Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg";
+                openFileDialog1.FilterIndex = 2;
+                openFileDialog1.RestoreDirectory = true;
+                openFileDialog1.InitialDirectory = @"D:\";
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    profile_pic.ImageLocation = openFileDialog1.FileName;
+                    pictureBox5.ImageLocation = openFileDialog1.FileName;
+                    string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\picLoc.txt";
+
+                    using (var write = new StreamWriter(path))
+                    {
+                        write.Write(openFileDialog1.FileName);
+                    }
+
+                }
+            }
+        }
+
+        private void bunifuButton2_Click(object sender, EventArgs e)
+        {
+            Image myImage = Resources.profile;
+            pictureBox5.Image = myImage;
+            profile_pic.Image = myImage;
+        }
+
+        private void bunifuLabel1_Click(object sender, EventArgs e)
+        {
+
+
+            if (MessageBox.Show("Вы уверены?", "Удалить", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            {
+                string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\username.txt";
+
+                try
+                {
+                    if (File.Exists(path))
+                    {
+                        IntPtr window1 = FindWindow(null, "Основная форма");
+                        IntPtr window2 = FindWindow(null, "Статистика");
+
+                        // Close the two windows
+                        if (window1 != IntPtr.Zero)
+                        {
+                            SendMessage(window1, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                        }
+
+                        if (window2 != IntPtr.Zero)
+                        {
+                            SendMessage(window2, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                        }
+
+                        // Open the third window
+                        RegistrationForm thirdForm = new RegistrationForm();
+                        thirdForm.Show();
+
+                        File.Delete(path);
+                      
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+
+            }
         }
 
         private void bunifuButton21_Click(object sender, EventArgs e)

@@ -80,7 +80,7 @@ namespace MonitoringMoney
             password_box.PasswordChar = password_check.Checked ? '\0' : '●';
         }
 
-        private void RegistrationForm_Load(object sender, EventArgs e)
+        private void RegistrationForm_C(object sender, EventArgs e)
         {
 
         }
@@ -93,6 +93,12 @@ namespace MonitoringMoney
 
             Register register = new Register();
             register.ShowDialog();
+           
+        }
+
+        private void RegistrationForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
         }
     }
 }
