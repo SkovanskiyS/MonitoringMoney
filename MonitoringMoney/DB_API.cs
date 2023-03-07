@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
@@ -59,14 +58,6 @@ namespace MonitoringMoney
             }
             connection.Close();
         }
-
-        public void Refresh()
-        {
-
-        }
-
-        public void Delete() { }
-
 
         public DataTable LoadAllData()
         {
@@ -128,7 +119,6 @@ namespace MonitoringMoney
             {
             
             }
-           // MessageBox.Show("Ничего не найдено!", "Пусто", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return dataTable;
         }
 

@@ -856,7 +856,6 @@
             this.budgetValue.TextPlaceholder = "Введите сумму";
             this.budgetValue.UseSystemPasswordChar = false;
             this.budgetValue.WordWrap = true;
-            this.budgetValue.TextChanged += new System.EventHandler(this.sumValue_TextChanged);
             this.budgetValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.sumValue_KeyPress);
             this.budgetValue.Leave += new System.EventHandler(this.budgetValue_Leave);
             // 

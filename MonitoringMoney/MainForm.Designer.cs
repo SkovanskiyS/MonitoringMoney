@@ -639,7 +639,6 @@
             this.searchTextBox.TextPlaceholder = "Введите имя клиента";
             this.searchTextBox.UseSystemPasswordChar = false;
             this.searchTextBox.WordWrap = true;
-            this.searchTextBox.TextChange += new System.EventHandler(this.searchTextBox_TextChange);
             // 
             // bunifuPanel5
             // 
@@ -1061,7 +1060,6 @@
             this.wellText.TextPlaceholder = "Введите курс";
             this.wellText.UseSystemPasswordChar = false;
             this.wellText.WordWrap = true;
-            this.wellText.TextChanged += new System.EventHandler(this.wellText_TextChanged);
             this.wellText.Click += new System.EventHandler(this.wellText_Click);
             this.wellText.MouseClick += new System.Windows.Forms.MouseEventHandler(this.wellText_MouseClick);
             // 
@@ -1260,7 +1258,6 @@
             this.sumValue.TextPlaceholder = "Введите сумму";
             this.sumValue.UseSystemPasswordChar = false;
             this.sumValue.WordWrap = true;
-            this.sumValue.TextChanged += new System.EventHandler(this.sumValue_TextChanged);
             this.sumValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.bunifuTextBox1_KeyPress);
             this.sumValue.Leave += new System.EventHandler(this.sumValue_Leave);
             // 
@@ -1665,7 +1662,6 @@
             this.allDataGridView.Size = new System.Drawing.Size(1275, 483);
             this.allDataGridView.TabIndex = 7;
             this.allDataGridView.Theme = Bunifu.UI.WinForms.BunifuDataGridView.PresetThemes.Light;
-            this.allDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.allDataGridView_CellContentClick);
             this.allDataGridView.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.allDataGridView_RowStateChanged);
             // 
             // bunifuButton1

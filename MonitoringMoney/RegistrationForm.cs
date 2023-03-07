@@ -100,5 +100,10 @@ namespace MonitoringMoney
         {
             System.Windows.Forms.Application.Exit();
         }
+
+        private void RegistrationForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

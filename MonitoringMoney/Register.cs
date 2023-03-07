@@ -23,8 +23,6 @@ namespace MonitoringMoney
             InitializeComponent();
         }
 
-        /*Личное пользование (Физическое лицо)
-        Предприятия (Юридическое лицо)*/
         private void using_dropdown_SelectedValueChanged(object sender, EventArgs e)
         {
             if (using_dropdown.Text== "Личное пользование (Физическое лицо)")
@@ -90,12 +88,6 @@ namespace MonitoringMoney
                 throw;
             }
         }
-
-        private void sumValue_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void sumValue_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!Char.IsDigit(e.KeyChar) && e.KeyChar != Convert.ToChar(Keys.Back))

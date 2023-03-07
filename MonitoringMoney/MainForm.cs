@@ -29,14 +29,10 @@ namespace MonitoringMoney
         public MainForm()
         {
             InitializeComponent();
-
-
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //dB.CloseConnectionSQL();
-            //Application.Exit();
             this.Close();
         }
 
@@ -54,8 +50,6 @@ namespace MonitoringMoney
             this.KeyPreview = true;
 
         }
-
-
         public void GetCurrency()
         {
             try
@@ -74,7 +68,6 @@ namespace MonitoringMoney
             }
 
         }
-
 
         private void bunifuTextBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -145,7 +138,6 @@ namespace MonitoringMoney
 
             string[] columnNames = { "ID", "Дата", "Клиент", "Обмен", "Валюта", "Сумма", "Курс", "Транзакция","Описание"};
 
-
             if (allDataGridView.Columns.Count>0)
             {
                 for (int i = 0; i < allDataGridView.Columns.Count; i++)
@@ -158,20 +150,6 @@ namespace MonitoringMoney
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter) addBtn.PerformClick();
-        }
-
-        private void searchTextBox_TextChange(object sender, EventArgs e)
-        {
-            //dataBase = new DB_API(searchTextBox.Text);
-            //if (searchTextBox.Text.Length > 0)
-            //{
-            //    allDataGridView.DataSource = dataBase.Search(searchTextBox.Text);
-            //}
-            //else
-            //{
-            //    allDataGridView.DataSource = dataBase.LoadAllData();
-            //}
-
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
@@ -211,10 +189,7 @@ namespace MonitoringMoney
 
         private void applyBtn_Click(object sender, EventArgs e)
         {
-
             allDataGridView.DataSource = dataBase.FilterByDate(dateFrom.Value.Date, dateTo.Value.Date, dataBase.Search("undefined"));
-
-
         }
 
         private void resetDate_Click(object sender, EventArgs e)
@@ -247,15 +222,12 @@ namespace MonitoringMoney
         private void addBtn_Click(object sender, EventArgs e)
         {
 
-
             string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\currency.txt";
 
             using (var write = new StreamWriter(path))
             {
                 write.Write(wellText.Text);
             }
-
-
             changeText();
             dataBase = new DB_API();
             dataBase.Insert(dateOfReg.Value.Date, clientNameT.Text, get_giveDropdown.Text, currency_Dropdown.Text, sumValue.Text, wellText.Text, cash_transfer.Text, descriptionText.Text, wellText.Enabled);
@@ -282,32 +254,13 @@ namespace MonitoringMoney
             }
             isWindowOpened = false;
         }
-
-        private void allDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void bunifuIconButton1_Click(object sender, EventArgs e)
         {
             searchTextBox.Text = "";
             allDataGridView.DataSource = dataBase.LoadAllData();
         }
-
-        private void sumValue_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void wellText_TextChanged(object sender, EventArgs e)
-        {
-
-
-        }
-
         private void wellText_Click(object sender, EventArgs e)
         {
-
             if (!(currency>0))
             {
                 GetCurrency();
@@ -320,11 +273,6 @@ namespace MonitoringMoney
         private void bunifuButton1_Click_1(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-
-        private void fileStrip_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void сохранитьКакToolStripMenuItem1_Click(object sender, EventArgs e)

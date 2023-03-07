@@ -2,18 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using IronPython.Hosting;
-using Microsoft.Scripting.Hosting;
 using System.IO;
-using static System.Net.Mime.MediaTypeNames;
-using Newtonsoft.Json.Linq;
-using static IronPython.Modules._ast;
-using System.Globalization;
-using TheArtOfDev.HtmlRenderer.Adapters;
 
 namespace MonitoringMoney
 {
@@ -61,12 +51,9 @@ namespace MonitoringMoney
                     table.Load(reader);
                 }
             }
-
             connection.Close();
             return table;
         }
-
-
         public void WholeSpends()
         {
             Read_Table_Name();
@@ -87,27 +74,7 @@ namespace MonitoringMoney
                 }
             }
             connection.Close();
-
         }
-
-        //public void GetCurrency()
-        //{
-        //    try
-        //    {
-        //        var timeoutInMilliseconds = 5000;
-        //        var uri = new Uri("https://bank.uz/currency");
-        //        var doc = Supremes.Dcsoup.Parse(uri, timeoutInMilliseconds);
-        //        var ratingSpan = doc.Select("span[class=medium-text]");
-        //        double d_currency = double.Parse(ratingSpan.Text.Substring(23, 9).Replace(".", ","));
-        //        currency = Convert.ToInt32(d_currency);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        currency = 0;
-        //        MessageBox.Show(e.Message);
-        //    }
-            
-        //}
 
         public Dictionary<object, double> Get_Name_And_Amount(string get_or_give)
         {
@@ -117,7 +84,6 @@ namespace MonitoringMoney
             {
                 currency = reader.Read();
             }
-          
 
             Read_Table_Name();
 
@@ -159,7 +125,6 @@ namespace MonitoringMoney
 
         public Dictionary<object, double> Get_Data_By_DateTime(DateTime from,DateTime to,string get_or_give)
         {
-
             Read_Table_Name();
 
             string query = "select `Client`,`Amount` from "+table_name+" where Date between @from and @to and Exchange=@exchange";
@@ -199,7 +164,6 @@ namespace MonitoringMoney
             connection.Close();
             return data;
         }
-
 
         public List<string> Load_Page_3()
         {
