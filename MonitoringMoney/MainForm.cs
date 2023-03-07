@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
+using System.Drawing.Printing;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using Bunifu.UI.WinForms;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using MySql.Data.MySqlClient;
+using Microsoft.Office.Interop;
 
 
 namespace MonitoringMoney
@@ -14,7 +19,7 @@ namespace MonitoringMoney
         DB dB;
         DataTable dataTable;
         MySqlDataAdapter dataAdapter;
-        MySqlCommand cmd;
+
         BindingSource bindingSource;
         DB_API dataBase;
         private bool isWindowOpened;
@@ -315,6 +320,99 @@ namespace MonitoringMoney
         private void bunifuButton1_Click_1(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void fileStrip_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void сохранитьКакToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (allDataGridView.Rows.Count > 0)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Excel |*.xlsx";
+                sfd.FileName = "Output.xlsx";
+                bool fileError = false;
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    ExportToExcel(allDataGridView, sfd.FileName);
+
+                }
+            }
+        }
+
+        private void ExportToPDF(DataGridView dataGridView, string filePath)
+        {
+            // Create a Document object
+            PdfPTable table = new PdfPTable(dataGridView.Columns.Count);
+
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                for (int j = 0; j < dataGridView.Columns.Count; j++)
+                {
+                    table.AddCell(new Phrase(dataGridView.Rows[i].Cells[j].Value.ToString()));
+                }
+            }
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            {
+                Document pdfDoc = new Document(PageSize.A2, 10f, 10f, 10f, 0f);
+                PdfWriter.GetInstance(pdfDoc, stream);
+                pdfDoc.Open();
+                pdfDoc.Add(table);
+                pdfDoc.Close();
+                stream.Close();
+            }
+        }
+
+        private void ExportToExcel(DataGridView dataGridView, string filePath)
+        {
+            Microsoft.Office.Interop.Excel.Application xlApp;
+            Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
+            Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
+            object misValue = System.Reflection.Missing.Value;
+
+            xlApp = new Microsoft.Office.Interop.Excel.Application();
+            xlWorkBook = xlApp.Workbooks.Add(misValue);
+            xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            int i = 0;
+            int j = 0;
+
+            for (i = 0; i <= dataGridView.RowCount - 1; i++)
+            {
+                for (j = 0; j <= dataGridView.ColumnCount - 1; j++)
+                {
+                    DataGridViewCell cell = dataGridView[j, i];
+                    xlWorkSheet.Cells[i + 1, j + 1] = cell.Value;
+                }
+            }
+            xlWorkBook.SaveAs(filePath, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            xlWorkBook.Close(true, misValue, misValue);
+            xlApp.Quit();
+            releaseObject(xlWorkSheet);
+            releaseObject(xlWorkBook);
+            releaseObject(xlApp);
+
+            MessageBox.Show("Excel file created , you can find the file c:\\csharp.net-informations.xls");
+
+        }
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Exception Occured while releasing object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
         }
     }
 }
