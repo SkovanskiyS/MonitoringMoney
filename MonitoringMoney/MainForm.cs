@@ -48,7 +48,7 @@ namespace MonitoringMoney
             ChangeColumnName();
             countOfUsersLabel.Text = Convert.ToString(allDataGridView.RowCount);
             this.KeyPreview = true;
-
+            GetCurrency();
         }
         public void GetCurrency()
         {
@@ -60,6 +60,7 @@ namespace MonitoringMoney
                 var ratingSpan = doc.Select("span[class=medium-text]");
                 double d_currency = double.Parse(ratingSpan.Text.Substring(23, 9).Replace(".", ","));
                 currency = Convert.ToInt32(d_currency);
+                wellText.Text = Convert.ToInt32(d_currency).ToString();
             }
             catch (Exception)
             {
@@ -104,7 +105,7 @@ namespace MonitoringMoney
 
         private void wellText_MouseClick(object sender, MouseEventArgs e)
         {
-            wellText.Enabled = Convert.ToString(currency_Dropdown.SelectedItem) == "USD $" ? true : false;
+
         }
 
         private void cleanBtn_Click(object sender, EventArgs e)
@@ -222,7 +223,12 @@ namespace MonitoringMoney
         private void addBtn_Click(object sender, EventArgs e)
         {
 
-            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\currency.txt";
+            string path = Directory.GetCurrentDirectory() + @"\currency.txt";
+
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
 
             using (var write = new StreamWriter(path))
             {
@@ -253,6 +259,7 @@ namespace MonitoringMoney
                 isWindowOpened = true;
             }
             isWindowOpened = false;
+
         }
         private void bunifuIconButton1_Click(object sender, EventArgs e)
         {
@@ -261,12 +268,7 @@ namespace MonitoringMoney
         }
         private void wellText_Click(object sender, EventArgs e)
         {
-            if (!(currency>0))
-            {
-                GetCurrency();
-            }
 
-            wellText.Enabled = true;
             wellText.Text = currency.ToString();
         }
 
@@ -361,6 +363,27 @@ namespace MonitoringMoney
             {
                 GC.Collect();
             }
+        }
+
+        private void sumValue_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void statisticDropDown_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ChangePassword password = new ChangePassword();
+            password.ShowDialog();
+        }
+
+        private void wellText_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

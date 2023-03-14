@@ -949,6 +949,7 @@
             this.Controls.Add(this.user_box);
             this.Controls.Add(this.password_box);
             this.Controls.Add(this.password_check);
+            this.MinimumSize = new System.Drawing.Size(562, 606);
             this.Name = "Register";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Форма регистрации";

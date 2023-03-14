@@ -75,7 +75,7 @@ namespace MonitoringMoney
 
         public void Read_Table_Name()
         {
-            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\username.txt";
+            string path = Directory.GetCurrentDirectory()+ @"\username.txt";
 
             using (StreamReader reader2 = new StreamReader(path))
             {

@@ -59,7 +59,13 @@ namespace MonitoringMoney
 
         private void LoadPic()
         {
-            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\picLoc.txt";
+            string path = Directory.GetCurrentDirectory() + @"\picLoc.txt";
+
+
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
 
             using (var read = new StreamReader(path))
             {
@@ -85,6 +91,8 @@ namespace MonitoringMoney
         {
             dataBase = new DB_API();
 
+            
+
             allDataGridView.DataSource = dataBase.LoadAllData();
         }
 
@@ -97,7 +105,7 @@ namespace MonitoringMoney
             surname.Text = dict[2];
             company_name.Text = dict[3];
             username.Text = dict[4];
-            budget_integer.Text = dict[4];
+            budget_integer.Text = dict[6];
 
             if (dict[1].Length>0)
             {
@@ -105,54 +113,53 @@ namespace MonitoringMoney
             }
             else
             {
-                companyName.Text = dict[3];
+                companyName.Text = dict[3]; 
             }
 
             Profile_DB_API dB_API = new Profile_DB_API();
  
-            double spends = Get_All_Spends("Взял (одолжил)");
-            double get = Get_All_Spends("Дал (занял)");
+            double spends_dollar = Get_All_Spends("Взял (одолжил)");
+            double get_dollar = Get_All_Spends("Дал (занял)");
+            double spends_sum = db_api.Get_In_Sum("Взял (одолжил)");
+            double get_sum = db_api.Get_In_Sum("Дал (занял)");
             int currency = 0;
-            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\currency.txt";
+
+            string path = Directory.GetCurrentDirectory()+ @"\currency.txt";
+
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
 
             using (var reader = new StreamReader(path))
             {
-                currency = int.Parse(reader.ReadToEnd());
+                try
+                {
+                    currency = int.Parse(reader.ReadToEnd());
+                }
+                catch (Exception)
+                {
+
+                    currency = 0;
+                }
+
             }
 
-            double income = 0;
-            double spends_ = 0;
+            get_text.Text = "+" + get_dollar.ToString("#,#"+" $ ", CultureInfo.InvariantCulture)+get_sum.ToString("#,#"+" сум",CultureInfo.InvariantCulture);
+            spends_text.Text = "-" + spends_dollar.ToString("#,#" + " $ ", CultureInfo.InvariantCulture) + spends_sum.ToString("#,#" + " сум", CultureInfo.InvariantCulture);
+            string sum = "";
+            string dollar = "";
+
 
             if (dict[6].Contains("сум"))
             {
-               
-                double budget = double.Parse(dict[6].Replace("сум", "").Replace(",", ""));
-
-                budget_integer.Text = budget.ToString("#,#"+" сум", CultureInfo.InvariantCulture);
-                income = (get * currency);
-                spends_ = (spends * currency);
-
-                get_text.Text = "+"+income.ToString("#,#"+" сум", CultureInfo.InvariantCulture);
-                spends_text.Text = "-"+spends_.ToString("#,#"+" сум", CultureInfo.InvariantCulture);
-
-                bunifbudget_integeruLabel27.Text = (budget + income - spends_).ToString("#,#"+" сум",CultureInfo.InvariantCulture);
-            }
-            else
+                bunifbudget_integeruLabel27.Text = (int.Parse(dict[6].Replace("сум","").Replace(",",""))+get_sum-spends_sum).ToString("#,#"+" сум", CultureInfo.InvariantCulture);
+            }else
             {
+                int budget_d = int.Parse(dict[6].Replace("$", "").Replace(",",""));
 
-                double budget = double.Parse(dict[6].Replace("$", "").Replace(",", ""));
-
-                income = (get);
-                spends_ = (spends);
-
-                budget_integer.Text = budget.ToString("#,#" + " $", CultureInfo.InvariantCulture);
-                get_text.Text = "+"+income.ToString("#,#"+" $", CultureInfo.InvariantCulture);
-                spends_text.Text = "-"+spends_.ToString("#,#"+" $", CultureInfo.InvariantCulture);
-
-                bunifbudget_integeruLabel27.Text = (budget + get - spends).ToString("#,#"+" $", CultureInfo.InvariantCulture);
+                bunifbudget_integeruLabel27.Text = (budget_d + get_dollar - spends_dollar).ToString("#,#" + " $", CultureInfo.InvariantCulture);
             }
-
-
 
         }
 
@@ -372,7 +379,7 @@ namespace MonitoringMoney
             if (spends == 0) label_all_spends.Text = "0";
             else
             {
-                label_all_spends.Text = "-" + (spends).ToString("#,#", CultureInfo.InvariantCulture) + "$ | -" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
+                label_all_spends.Text = "-" + (spends).ToString("#,#", CultureInfo.InvariantCulture)+"$";
                 bunifuLabel2.Text = $"Ваш общий расход состовляет: ";
             }
             Render_BarChart();
@@ -396,7 +403,7 @@ namespace MonitoringMoney
             double spends = Get_All_Spends(get_text);
 
             if (spends == 0) label.Text = "0";
-            else label.Text = plus_or_minus + spends.ToString("#,#", CultureInfo.InvariantCulture) + $"$ | {plus_or_minus}" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
+            else label.Text = plus_or_minus + spends.ToString("#,#", CultureInfo.InvariantCulture)+"$";
         }
 
         private void apply_btn_p2_Click(object sender, EventArgs e)
@@ -409,7 +416,7 @@ namespace MonitoringMoney
             else
             {
 
-                whole_sum.Text = "+" + (spends).ToString("#,#", CultureInfo.InvariantCulture) + "$ | +" + $"{(spends * db_api.currency).ToString("#,#", CultureInfo.InvariantCulture)} сум";
+                whole_sum.Text = "+" + (spends).ToString("#,#", CultureInfo.InvariantCulture)+"$";
                 bunifuLabel15.Text = $"Ваш общий долг или прибыль состовляет: ";
             }
 
@@ -469,7 +476,13 @@ namespace MonitoringMoney
 
         private void bunifuButton24_Click(object sender, EventArgs e)
         {
-            main_menu.SetPage(3);
+            password pas = new password();
+            pas.ShowDialog();
+            if (pas.status)
+            {
+                main_menu.SetPage(3);
+            }
+
         }
 
         private void update_btn_Click(object sender, EventArgs e)
@@ -538,8 +551,11 @@ namespace MonitoringMoney
                 {
                     profile_pic.ImageLocation = openFileDialog1.FileName;
                     pictureBox5.ImageLocation = openFileDialog1.FileName;
-                    string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\picLoc.txt";
-
+                    string path = Directory.GetCurrentDirectory() + @"\picLoc.txt";
+                    if (!File.Exists(path))
+                    {
+                        File.Create(path).Close();
+                    }
                     using (var write = new StreamWriter(path))
                     {
                         write.Write(openFileDialog1.FileName);
@@ -562,7 +578,7 @@ namespace MonitoringMoney
 
             if (MessageBox.Show("Вы уверены?", "Удалить", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
-                string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\username.txt";
+                string path =Directory.GetCurrentDirectory() + @"\username.txt";
 
                 try
                 {

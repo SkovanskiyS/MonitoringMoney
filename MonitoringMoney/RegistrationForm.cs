@@ -56,8 +56,13 @@ namespace MonitoringMoney
 
                 if (dataTable.Rows.Count > 0)
                 {
-                    string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\username.txt";
-
+                    //string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\username.txt";
+                    string path = Directory.GetCurrentDirectory() + @"\username.txt";
+                    if (!File.Exists(path))
+                    {
+                        File.Create(path).Close();
+                    }
+                    
                     using (StreamWriter writer = new StreamWriter(path))
                     {
                         writer.Write(user_name + "_data");

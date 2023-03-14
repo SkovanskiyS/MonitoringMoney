@@ -26,7 +26,12 @@ namespace MonitoringMoney
 
         public void Read_Table_Name()
         {
-            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\username.txt";
+            string path = Directory.GetCurrentDirectory()+ @"\username.txt";
+
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
 
             using (StreamReader reader2 = new StreamReader(path))
             {
@@ -76,18 +81,62 @@ namespace MonitoringMoney
             connection.Close();
         }
 
-        public Dictionary<object, double> Get_Name_And_Amount(string get_or_give)
+        public double Get_In_Sum(string get_or_give)
         {
-            string path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName + @"\currency.txt";
-
-            using (var reader = new StreamReader(path))
-            {
-                currency = reader.Read();
-            }
-
             Read_Table_Name();
 
-            string query = "select `Client`,`Amount` from "+table_name+" where Exchange=@exchange";
+            string query = "select `Amount`,`Rate` from " + table_name + " where Exchange=@exchange";
+            double data = 0;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@exchange", get_or_give);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        double i = double.Parse(reader.GetString(0).Replace(",", "").Replace("сум", "").Replace("$", ""));
+
+                        double last_sum = 0;
+                        int currency_data = 0;
+                        try
+                        {
+                            string a = reader.GetString(1);
+
+                            currency_data = Convert.ToInt32(a);
+                        }
+                        catch (Exception)
+                        {
+                            currency_data = currency;
+                        }
+
+                        if (reader.GetString(0).Contains("$"))
+                        {
+                            last_sum = i * currency_data;
+                        }
+                        else
+                        {
+                            last_sum = i;
+                        }
+                        data += last_sum;
+
+
+                    }
+                }
+            }
+            connection.Close();
+            return data;
+        }
+
+
+        public Dictionary<object, double> Get_Name_And_Amount(string get_or_give)
+        {
+            Read_Table_Name();
+
+            string query = "select `Client`,`Amount`,`Rate` from " + table_name+" where Exchange=@exchange";
             Dictionary<object, double> data = new Dictionary<object, double>();
             if (connection.State == ConnectionState.Closed)
             {
@@ -103,9 +152,22 @@ namespace MonitoringMoney
                         double i = double.Parse(reader.GetString(1).Replace(",","").Replace("сум", "").Replace("$",""));
                         //int last_dollar = reader.GetString(1).Contains("сум")? i / currency : int.Parse(reader.GetString(1).Replace("$", "").Replace("сум",""));
                         double last_dollar = 0;
+                        int currency_data = 0;
+                        try
+                        {
+                            string a = reader.GetString(2);
+
+
+                            currency_data = Convert.ToInt32(reader.GetValue(2));
+                        }
+                        catch (Exception)
+                        {
+                            currency_data = currency;
+                        }
+
                         if (reader.GetString(1).Contains("сум"))
                         {
-                            last_dollar = i / currency;
+                            last_dollar = i / currency_data;
                         }
                         else
                         {
@@ -127,7 +189,7 @@ namespace MonitoringMoney
         {
             Read_Table_Name();
 
-            string query = "select `Client`,`Amount` from "+table_name+" where Date between @from and @to and Exchange=@exchange";
+            string query = "select `Client`,`Amount`,`Rate` from " + table_name+" where Date between @from and @to and Exchange=@exchange";
             Dictionary<object, double> data = new Dictionary<object, double>();
             if (connection.State == ConnectionState.Closed)
             {
@@ -145,9 +207,20 @@ namespace MonitoringMoney
                         double i = double.Parse(reader.GetString(1).Replace(",", "").Replace("сум", "").Replace("$", ""));
                         //int last_dollar = reader.GetString(1).Contains("сум")? i / currency : int.Parse(reader.GetString(1).Replace("$", "").Replace("сум",""));
                         double last_dollar = 0;
+                        int currency_data = 0;
+                        try
+                        {
+                            currency_data = Convert.ToInt32(reader.GetValue(2));
+                        }
+                        catch (Exception)
+                        {
+                            currency_data = currency;
+                        }
+
+
                         if (reader.GetString(1).Contains("сум"))
                         {
-                            last_dollar = i / currency;
+                            last_dollar = i / currency_data;
                         }
                         else
                         {
