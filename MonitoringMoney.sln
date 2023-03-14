@@ -5,14 +5,6 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringMoney", "MonitoringMoney\MonitoringMoney.csproj", "{AE802280-220C-4D4E-ACC9-D2C9F080D388}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup5", "Setup5\Setup5.vdproj", "{749B1087-66F5-4664-A385-F1F6C2CF47FE}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MonitoringMoney Setup", "MonitoringMoney Setup\MonitoringMoney Setup.vdproj", "{96BCDB8D-08C7-4512-B44B-AD52ED602C0E}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MonitoringMoney Setup2", "MonitoringMoney Setup2\MonitoringMoney Setup2.vdproj", "{F84A1A31-0FA5-4ED4-A668-98000F57C0E1}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup MonitoringMoney", "Setup MonitoringMoney\Setup MonitoringMoney.vdproj", "{5EEBC2DA-29AC-43F5-A117-C1E16F594E79}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,14 +15,6 @@ Global
 		{AE802280-220C-4D4E-ACC9-D2C9F080D388}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE802280-220C-4D4E-ACC9-D2C9F080D388}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE802280-220C-4D4E-ACC9-D2C9F080D388}.Release|Any CPU.Build.0 = Release|Any CPU
-		{749B1087-66F5-4664-A385-F1F6C2CF47FE}.Debug|Any CPU.ActiveCfg = Debug
-		{749B1087-66F5-4664-A385-F1F6C2CF47FE}.Release|Any CPU.ActiveCfg = Release
-		{96BCDB8D-08C7-4512-B44B-AD52ED602C0E}.Debug|Any CPU.ActiveCfg = Debug
-		{96BCDB8D-08C7-4512-B44B-AD52ED602C0E}.Release|Any CPU.ActiveCfg = Release
-		{F84A1A31-0FA5-4ED4-A668-98000F57C0E1}.Debug|Any CPU.ActiveCfg = Debug
-		{F84A1A31-0FA5-4ED4-A668-98000F57C0E1}.Release|Any CPU.ActiveCfg = Release
-		{5EEBC2DA-29AC-43F5-A117-C1E16F594E79}.Debug|Any CPU.ActiveCfg = Debug
-		{5EEBC2DA-29AC-43F5-A117-C1E16F594E79}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
